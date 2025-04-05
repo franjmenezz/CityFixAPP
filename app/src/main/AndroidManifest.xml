@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.Login"></activity>
+        <activity android:name=".Activity.Registro"></activity>
+        <activity android:name=".Activity.Main"></activity>
 
     </application>
 
