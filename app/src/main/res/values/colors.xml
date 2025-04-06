@@ -4,4 +4,16 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF5D5D</color>
     <color name="blue">#0097b2</color>
+    <color name="atoll">#096b7b</color>
+
+    --cod-gray: #1c1c1c;
+    --bondi-blue: #0494b4;
+    --silver: #c9c9c9;
+    --dove-gray: #717171;
+    --deep-cerulean: #04859d;
+    --atoll: #096b7b;
+    --bondi-blue: #0494ac;
+    --tundora: #474747;
+    --elephant: #14414a;
+    --deep-sea green: #0d525f;
 </resources>

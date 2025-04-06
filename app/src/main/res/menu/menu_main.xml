@@ -5,4 +5,14 @@
         android:title="Configuración"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item
+        android:id="@+id/action_user"
+        android:title="Usuario"
+        android:orderInCategory="101"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="Cerrar Sesión"
+        android:orderInCategory="102"
+        android:showAsAction="never" />
 </menu>

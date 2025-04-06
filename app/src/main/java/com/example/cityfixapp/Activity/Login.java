@@ -21,20 +21,29 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText etUsername = findViewById(R.id.Email);
+        EditText etEmail = findViewById(R.id.Usuario);
         EditText etPassword = findViewById(R.id.Contraseña);
-        Button btnLogin = findViewById(R.id.BTAceptarlogin);
-        Button btnRegister = findViewById(R.id.BTregistrar);
+        Button BTConfirmarLogin = findViewById(R.id.BTAceptarlogin);
+        Button BTRegistrar = findViewById(R.id.BTRegistrar);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        BTConfirmarLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputUsername = etUsername.getText().toString();
+                String inputUsername = etEmail.getText().toString();
                 String inputPassword = etPassword.getText().toString();
 
-                if (USERNAME.equals(inputUsername) && PASSWORD.equals(inputPassword)) {
-                    Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                String userType = verifyUser(inputUsername, inputPassword);
+
+                if ("admin".equals(userType)) {
+                    Toast.makeText(Login.this, "Inicio de sesión como administrador exitoso", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login.this, Main.class);
+                    intent.putExtra("userType", "admin");
+                    startActivity(intent);
+                    finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
+                } else if ("ciudadano".equals(userType)) {
+                    Toast.makeText(Login.this, "Inicio de sesión como ciudadano exitoso", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, Main.class);
+                    intent.putExtra("userType", "ciudadano");
                     startActivity(intent);
                     finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
                 } else {
@@ -43,12 +52,24 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+        BTRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, Registro.class);
                 startActivity(intent);
             }
         });
+    }
+    private String verifyUser(String username, String password) {
+        // Implementa la lógica de verificación de la contraseña aquí
+        // Por ejemplo, puedes comparar con una contraseña almacenada
+        if ("admin".equals(username) && "1234".equals(password)) {
+            return "admin";
+        } else if ("ciudadano".equals(username) && "4321".equals(password)) {
+            return "ciudadano";
+        } else {
+            return "invalid";
+        }
     }
 }

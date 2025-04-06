@@ -26,6 +26,7 @@
         <activity android:name=".Activity.Registro"></activity>
         <activity android:name=".Activity.Main"></activity>
         <activity android:name=".Activity.Configuracion"></activity>
+        <activity android:name=".Activity.Usuario"></activity>
 
     </application>
 
