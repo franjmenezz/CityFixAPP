@@ -1,6 +1,8 @@
 package com.example.cityfixapp.Activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
+import com.example.cityfixapp.DB.DB_Encriptacion;
 
 public class Registro extends AppCompatActivity {
 
@@ -29,20 +33,16 @@ public class Registro extends AppCompatActivity {
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String dni = etDNI.getText().toString();
-                String nombre = etNombre.getText().toString();
-                String email = etEmail.getText().toString();
-                String contraseña = etContraseña.getText().toString();
-                String telefono = etTelefono.getText().toString();
+                String dni = etDNI.getText().toString().trim();
+                String nombre = etNombre.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
+                String contraseña = etContraseña.getText().toString().trim();
+                String telefono = etTelefono.getText().toString().trim();
 
                 if (dni.isEmpty() || nombre.isEmpty() || email.isEmpty() || contraseña.isEmpty() || telefono.isEmpty()) {
                     Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Aquí puedes agregar la lógica para registrar al usuario
-                    Toast.makeText(Registro.this, "Usuario registrado", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Registro.this, Login.class);
-                    startActivity(intent);
-                    finish(); // Finaliza la actividad de registro para que no se pueda volver atrás
+                    registrarCiudadano(dni, nombre, email, contraseña, telefono);
                 }
             }
         });
@@ -55,5 +55,35 @@ public class Registro extends AppCompatActivity {
                 finish(); // Finaliza la actividad de registro para que no se pueda volver atrás
             }
         });
+    }
+
+    private void registrarCiudadano(String dni, String nombre, String email, String contraseña, String telefono) {
+        DBConexion dbConexion = new DBConexion(this);
+        SQLiteDatabase db = dbConexion.getWritableDatabase();
+
+        try {
+            ContentValues valores = new ContentValues();
+            valores.put("dni", DB_Encriptacion.encrypt(dni));
+            valores.put("nombre", nombre); // No se encripta
+            valores.put("email", DB_Encriptacion.encrypt(email));
+            valores.put("password", DB_Encriptacion.encrypt(contraseña));
+            valores.put("telefono", DB_Encriptacion.encrypt(telefono));
+
+            long resultado = db.insert("ciudadano", null, valores);
+
+            if (resultado != -1) {
+                Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Registro.this, Login.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } finally {
+            db.close();
+        }
     }
 }
