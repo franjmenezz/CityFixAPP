@@ -16,9 +16,6 @@ import com.example.cityfixapp.R;
 
 public class Login extends AppCompatActivity {
 
-    private static final String USERNAME = "admin";
-    private static final String PASSWORD = "1234";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +32,14 @@ public class Login extends AppCompatActivity {
                 String inputUsername = etEmail.getText().toString();
                 String inputPassword = etPassword.getText().toString();
 
-                String userType = verifyUser(inputUsername, inputPassword);
+                String userType = VerificarUsuario(inputUsername, inputPassword);
 
                 if ("admin".equals(userType)) {
-                    Toast.makeText(Login.this, "Inicio de sesión como administrador exitoso", Toast.LENGTH_SHORT).show();
+                    mostrarDialogoAdministrador(inputUsername, inputPassword);
+                } else if ("tecnico".equals(userType) || "ciudadano".equals(userType)) {
+                    Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Login.this, Main.class);
-                    intent.putExtra("userType", "admin");
-                    startActivity(intent);
-                    finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
-                } else if ("ciudadano".equals(userType)) {
-                    Toast.makeText(Login.this, "Inicio de sesión como ciudadano exitoso", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Main.class);
-                    intent.putExtra("userType", "ciudadano");
+                    intent.putExtra("userType", userType);
                     startActivity(intent);
                     finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
                 } else {
@@ -64,44 +57,34 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    private String verifyUser(String username, String password) {
-        // Implementa la lógica de verificación de la contraseña aquí
-        // Por ejemplo, puedes comparar con una contraseña almacenada
-        if ("admin".equals(username) && "1234".equals(password)) {
-            return "admin";
-        } else if ("ciudadano".equals(username) && "4321".equals(password)) {
-            return "ciudadano";
-        } else {
-            return "invalid";
-        }
-    }
+
 
     // Método para mostrar el mensaje al detectar un administrador
-    private void mostrarDialogoAdministrador() {
+    private void mostrarDialogoAdministrador(String username, String password) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Acceso de Administrador");
         builder.setMessage("Se ha detectado un usuario administrador. Introduzca el PIN de acceso:");
 
-        // Campo de texto para el PIN
         final EditText input = new EditText(this);
         input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         builder.setView(input);
 
-        // Botón de aceptar
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String pinIngresado = input.getText().toString();
                 if (validarPin(pinIngresado)) {
                     Toast.makeText(getApplicationContext(), "Acceso concedido", Toast.LENGTH_SHORT).show();
-                    // Continuar con el flujo de administrador
+                    Intent intent = new Intent(Login.this, Main.class);
+                    intent.putExtra("userType", "admin");
+                    startActivity(intent);
+                    finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
                 } else {
                     Toast.makeText(getApplicationContext(), "PIN incorrecto", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        // Botón de cancelar
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -121,12 +104,21 @@ public class Login extends AppCompatActivity {
     private String VerificarUsuario(String username, String password) {
         DBConexion dbConexion = new DBConexion(this);
 
+        // Verificar si es administrador
         if (dbConexion.verificarCredenciales("administrador", "admin_usuario", "admin_password", username, password)) {
             return "admin";
-        } else if (dbConexion.verificarCredenciales("ciudadano", "usuario", "password", username, password)) {
-            return "ciudadano";
-        } else {
-            return "invalid";
         }
+
+        // Verificar si es técnico
+        if (dbConexion.verificarCredenciales("tecnicos", "usuario", "password", username, password)) {
+            return "tecnico";
+        }
+
+        // Verificar si es ciudadano
+        if (dbConexion.verificarCredenciales("ciudadano", "usuario", "password", username, password)) {
+            return "ciudadano";
+        }
+
+        return "invalid";
     }
 }
