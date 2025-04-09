@@ -5,15 +5,15 @@
     <color name="red">#FF5D5D</color>
     <color name="blue">#0097b2</color>
     <color name="atoll">#096b7b</color>
-
-    --cod-gray: #1c1c1c;
-    --bondi-blue: #0494b4;
-    --silver: #c9c9c9;
-    --dove-gray: #717171;
-    --deep-cerulean: #04859d;
-    --atoll: #096b7b;
-    --bondi-blue: #0494ac;
-    --tundora: #474747;
-    --elephant: #14414a;
-    --deep-sea green: #0d525f;
+    <color name="bondi_blue">#0494b4</color>
+    <color name="deep_sea_green">#0d525f</color>
+    <color name="cod_gray">#1c1c1c</color>
+    <color name="silver">#EBEBEB</color>
+    <color name="dove_gray">#717171</color>
+    <color name="deep_cerulean">#04859d</color>
+    <color name="tundora">#474747</color>
+    <color name="elephant">#14414a</color>
+    <color name="blue_200">#2196F3</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="blue_500">#2196F3</color>
 </resources>

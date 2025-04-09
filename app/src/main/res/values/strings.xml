@@ -8,5 +8,22 @@
     <string name="previous">Previous</string>
     <string name="user">Usuario</string>
 
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="forgot_password">Olvidé mi contraseña</string>
+
+
+    <string name="btMostrarIncidencias">Mostrar Incidencias</string>
+    <string name="btNuevoAdministrador">Nuevo Administrador</string>
+    <string name="btModificarAdministrador">Modificar Administrador</string>
+    <string name="btMostrarAdministradores">Mostrar Administradores</string>
+    <string name="btNuevoTecnico">Nuevo Técnico</string>
+    <string name="btModificarTecnico">Modificar Técnico</string>
+    <string name="btMostrarTecnicos">Mostrar Técnico</string>
+    <string name="btModificarCiudadano">Modificar Ciudadano</string>
+    <string name="btMostrarCiudadanos">Mostrar Ciudadanados</string>
+
+
 
 </resources>

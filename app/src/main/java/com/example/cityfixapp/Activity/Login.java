@@ -29,8 +29,13 @@ public class Login extends AppCompatActivity {
         BTConfirmarLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputUsername = etEmail.getText().toString();
-                String inputPassword = etPassword.getText().toString();
+                String inputUsername = etEmail.getText().toString().trim();
+                String inputPassword = etPassword.getText().toString().trim();
+
+                if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
+                    Toast.makeText(Login.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 String userType = VerificarUsuario(inputUsername, inputPassword);
 
@@ -41,7 +46,7 @@ public class Login extends AppCompatActivity {
                     Intent intent = new Intent(Login.this, Main.class);
                     intent.putExtra("userType", userType);
                     startActivity(intent);
-                    finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
+                    finish();
                 } else {
                     Toast.makeText(Login.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 }
@@ -75,8 +80,7 @@ public class Login extends AppCompatActivity {
                 String pinIngresado = input.getText().toString();
                 if (validarPin(pinIngresado)) {
                     Toast.makeText(getApplicationContext(), "Acceso concedido", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Main.class);
-                    intent.putExtra("userType", "admin");
+                    Intent intent = new Intent(Login.this, Activity_Administrador.class);
                     startActivity(intent);
                     finish(); // Finaliza la actividad de inicio de sesión para que no se pueda volver atrás
                 } else {

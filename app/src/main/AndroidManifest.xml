@@ -28,6 +28,7 @@
         <activity android:name=".Activity.Main"></activity>
         <activity android:name=".Activity.Configuracion"></activity>
         <activity android:name=".Activity.Usuario"></activity>
+        <activity android:name=".Activity.Activity_Administrador" />
 
     </application>
 
