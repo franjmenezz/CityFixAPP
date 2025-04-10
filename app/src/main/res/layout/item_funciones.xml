@@ -1,5 +1,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -26,9 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/item_funcion"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/item_funcion"
+        tools:visibility="visible">
 
         <Button
             android:id="@+id/btMostrarIncidencias"
@@ -36,11 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btMostrarIncidencias"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
-            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,8 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btNuevoAdministrador"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -71,8 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btModificarAdministrador"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -83,8 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btMostrarAdministradores"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -106,8 +108,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btNuevoTecnico"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -118,8 +120,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btModificarTecnico"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -130,8 +132,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btMostrarTecnicos"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -153,8 +155,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btModificarCiudadano"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -165,8 +167,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/btMostrarCiudadanos"
-            android:textColor="@color/deep_cerulean"
-            android:background="@drawable/rounded_background"
+            android:backgroundTint="@color/deep_cerulean"
+            android:textColor="@color/silver"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
