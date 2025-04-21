@@ -54,7 +54,7 @@ public class Administrador_Adapter extends RecyclerView.Adapter<Administrador_Ad
                 case "Administradores":
                     holder.menuAdministradores.setVisibility(View.VISIBLE);
                     break;
-                case "Tecnicos":
+                case "Técnicos":
                     holder.menuTecnicos.setVisibility(View.VISIBLE);
                     break;
                 case "Ciudadanos":

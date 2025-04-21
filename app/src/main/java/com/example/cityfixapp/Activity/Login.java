@@ -41,13 +41,19 @@ public class Login extends AppCompatActivity {
 
                 if ("admin".equals(userType)) {
                     mostrarDialogoAdministrador(inputUsername, inputPassword);
-                } else if ("tecnico".equals(userType) || "ciudadano".equals(userType)) {
+                } else if ("tecnico".equals(userType)) {
                     Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Main.class);
+                    Intent intent = new Intent(Login.this, Activity_Tecnico.class);
                     intent.putExtra("userType", userType);
                     startActivity(intent);
                     finish();
-                } else {
+                } else if ("ciudadano".equals(userType)) {
+                    Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Login.this, Activity_Ciudadano.class);
+                    intent.putExtra("userType", userType);
+                    startActivity(intent);
+                    finish();
+                }else {
                     Toast.makeText(Login.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 }
             }
