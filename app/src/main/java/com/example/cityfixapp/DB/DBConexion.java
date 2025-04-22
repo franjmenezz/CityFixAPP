@@ -60,11 +60,15 @@ public class DBConexion extends SQLiteOpenHelper {
             CIUDADANO_TELEFONO + " TEXT NOT NULL, " +
             CIUDADANO_USUARIO + " TEXT NOT NULL, " +
             CIUDADANO_DNI + " TEXT NOT NULL);";
+
+
     private static final String CREAR_TABLA_INCIDENCIAS = "CREATE TABLE " + TABLA_INCIDENCIAS +
             " (" + INCIDENCIA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             INCIDENCIA_TITULO + " TEXT NOT NULL, " +
             INCIDENCIA_DESCRIPCION + " TEXT NOT NULL, " +
-            INCIDENCIA_ESTADO + " TEXT NOT NULL);";
+            INCIDENCIA_ESTADO + " TEXT NOT NULL, " +
+            "id_ciudadano INTEGER NOT NULL, " +
+            "FOREIGN KEY (id_ciudadano) REFERENCES " + TABLA_CIUDADANO + "(" + CIUDADANO_ID + "));";
 
 
     // Sentencia SQL para la creación de la tabla tecnicos
@@ -96,10 +100,10 @@ public class DBConexion extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLA_ADMINISTRADOR);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLA_CIUDADANO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLA_INCIDENCIAS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLA_TECNICOS); // Nueva tabla
+        db.execSQL("DROP TABLE IF EXISTS " + TABLA_CIUDADANO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLA_TECNICOS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLA_ADMINISTRADOR);
         onCreate(db);
     }
 
@@ -145,12 +149,17 @@ public class DBConexion extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-    public void insertarIncidencia(SQLiteDatabase db, String titulo, String descripcion, String estado) {
+    public void insertarIncidencia(SQLiteDatabase db, String titulo, String descripcion, String estado, int idCiudadano) {
         ContentValues valores = new ContentValues();
         valores.put(INCIDENCIA_TITULO, titulo);
         valores.put(INCIDENCIA_DESCRIPCION, descripcion);
         valores.put(INCIDENCIA_ESTADO, estado);
+        valores.put("id_ciudadano", idCiudadano);
         db.insert(TABLA_INCIDENCIAS, null, valores);
+    }
+
+    public Cursor seleccionarIncidenciasPorCiudadano(SQLiteDatabase db, int idCiudadano) {
+        return db.rawQuery("SELECT * FROM " + TABLA_INCIDENCIAS + " WHERE id_ciudadano = ?", new String[]{String.valueOf(idCiudadano)});
     }
 
     // Métodos para seleccionar datos de las tablas
@@ -159,9 +168,14 @@ public class DBConexion extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 try {
-                    String usuario = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(ADMIN_USUARIO)));
-                    String password = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(ADMIN_PASSWORD)));
-                    // Usa los datos desencriptados según sea necesario
+                    int usuarioIndex = cursor.getColumnIndex(ADMIN_USUARIO);
+                    int passwordIndex = cursor.getColumnIndex(ADMIN_PASSWORD);
+
+                    if (usuarioIndex >= 0 && passwordIndex >= 0) {
+                        String usuario = DB_Encriptacion.decrypt(cursor.getString(usuarioIndex));
+                        String password = DB_Encriptacion.decrypt(cursor.getString(passwordIndex));
+                        // Usa los datos desencriptados según sea necesario
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -212,10 +226,24 @@ public class DBConexion extends SQLiteOpenHelper {
 
     public boolean verificarCredenciales(String tabla, String usuarioColumna, String passwordColumna, String usuario, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + tabla + " WHERE " + usuarioColumna + " = ? AND " + passwordColumna + " = ?",
-                new String[]{usuario, password});
-        boolean existe = cursor.getCount() > 0;
+        Cursor cursor = db.rawQuery("SELECT " + passwordColumna + " FROM " + tabla + " WHERE " + usuarioColumna + " = ?", new String[]{usuario});
+
+        if (cursor.moveToFirst()) {
+            try {
+                String encryptedPassword = cursor.getString(0);
+                String decryptedPassword = DB_Encriptacion.decrypt(encryptedPassword);
+
+                // Compara la contraseña desencriptada con la ingresada
+                if (decryptedPassword.equals(password)) {
+                    cursor.close();
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         cursor.close();
-        return existe;
+        return false;
     }
 }

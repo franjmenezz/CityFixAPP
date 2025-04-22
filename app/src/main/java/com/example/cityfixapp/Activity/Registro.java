@@ -24,6 +24,7 @@ public class Registro extends AppCompatActivity {
 
         EditText etDNI = findViewById(R.id.DNI);
         EditText etNombre = findViewById(R.id.Nombre);
+        EditText etUsuario = findViewById(R.id.Usuario);
         EditText etEmail = findViewById(R.id.Email);
         EditText etContraseña = findViewById(R.id.Contraseña);
         EditText etTelefono = findViewById(R.id.Telefono);
@@ -35,6 +36,7 @@ public class Registro extends AppCompatActivity {
             public void onClick(View v) {
                 String dni = etDNI.getText().toString().trim();
                 String nombre = etNombre.getText().toString().trim();
+                String usuario = etUsuario.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
                 String contraseña = etContraseña.getText().toString().trim();
                 String telefono = etTelefono.getText().toString().trim();
@@ -42,7 +44,7 @@ public class Registro extends AppCompatActivity {
                 if (dni.isEmpty() || nombre.isEmpty() || email.isEmpty() || contraseña.isEmpty() || telefono.isEmpty()) {
                     Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    registrarCiudadano(dni, nombre, email, contraseña, telefono);
+                    registrarCiudadano(dni, nombre, usuario, email, contraseña, telefono);
                 }
             }
         });
@@ -57,14 +59,15 @@ public class Registro extends AppCompatActivity {
         });
     }
 
-    private void registrarCiudadano(String dni, String nombre, String email, String contraseña, String telefono) {
+    private void registrarCiudadano(String dni, String nombre, String usuario, String email, String contraseña, String telefono) {
         DBConexion dbConexion = new DBConexion(this);
         SQLiteDatabase db = dbConexion.getWritableDatabase();
 
         try {
             ContentValues valores = new ContentValues();
             valores.put("dni", DB_Encriptacion.encrypt(dni));
-            valores.put("nombre", nombre); // No se encripta
+            valores.put("nombre", nombre);// No se encripta
+            valores.put("usuario", usuario);
             valores.put("email", DB_Encriptacion.encrypt(email));
             valores.put("password", DB_Encriptacion.encrypt(contraseña));
             valores.put("telefono", DB_Encriptacion.encrypt(telefono));
