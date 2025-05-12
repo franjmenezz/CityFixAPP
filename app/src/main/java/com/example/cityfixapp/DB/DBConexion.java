@@ -104,118 +104,27 @@ public class DBConexion extends SQLiteOpenHelper {
     }
 
     // Métodos para insertar datos en las tablas
-    public void insertarAdministrador(SQLiteDatabase db, String admin_usuario, String admin_password) {
-        try {
-            ContentValues valores = new ContentValues();
-            valores.put(ADMIN_USUARIO, DB_Encriptacion.encrypt(admin_usuario));
-            valores.put(ADMIN_PASSWORD, DB_Encriptacion.encrypt(admin_password));
-            db.insert(TABLA_ADMINISTRADOR, null, valores);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void insertarCiudadano(SQLiteDatabase db, String nombre, String email, String password, String telefono, String usuario, String dni) {
-        try {
-            ContentValues valores = new ContentValues();
-            valores.put(CIUDADANO_NOMBRE, nombre); // No se encripta
-            valores.put(CIUDADANO_EMAIL, DB_Encriptacion.encrypt(email));
-            valores.put(CIUDADANO_PASSWORD, DB_Encriptacion.encrypt(password));
-            valores.put(CIUDADANO_TELEFONO, DB_Encriptacion.encrypt(telefono));
-            valores.put(CIUDADANO_USUARIO, usuario); // No se encripta
-            valores.put(CIUDADANO_DNI, DB_Encriptacion.encrypt(dni));
-            db.insert(TABLA_CIUDADANO, null, valores);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    // Método para insertar datos en la tabla tecnicos
-    public void insertarTecnico(SQLiteDatabase db, String nombre, String sector, String clave, String password, String usuario) {
-        try {
-            ContentValues valores = new ContentValues();
-            valores.put(TECNICO_NOMBRE, nombre); // No se encripta
-            valores.put(TECNICO_SECTOR, DB_Encriptacion.encrypt(sector));
-            valores.put(TECNICO_CLAVE, DB_Encriptacion.encrypt(clave));
-            valores.put(TECNICO_PASSWORD, DB_Encriptacion.encrypt(password));
-            valores.put(TECNICO_USUARIO, usuario); // No se encripta
-            db.insert(TABLA_TECNICOS, null, valores);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void insertarIncidencia(SQLiteDatabase db, String titulo, String descripcion, String estado) {
-        ContentValues valores = new ContentValues();
-        valores.put(INCIDENCIA_TITULO, titulo);
-        valores.put(INCIDENCIA_DESCRIPCION, descripcion);
-        valores.put(INCIDENCIA_ESTADO, estado);
-        db.insert(TABLA_INCIDENCIAS, null, valores);
-    }
-
-    // Métodos para seleccionar datos de las tablas
-    public Cursor seleccionarAdministradores(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_ADMINISTRADOR, null);
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String usuario = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(ADMIN_USUARIO)));
-                    String password = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(ADMIN_PASSWORD)));
-                    // Usa los datos desencriptados según sea necesario
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (cursor.moveToNext());
-        }
-        return cursor;
-    }
-
-    public Cursor seleccionarCiudadanos(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_CIUDADANO, null);
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String email = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(CIUDADANO_EMAIL)));
-                    String password = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(CIUDADANO_PASSWORD)));
-                    String telefono = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(CIUDADANO_TELEFONO)));
-                    String dni = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(CIUDADANO_DNI)));
-                    // Usa los datos desencriptados según sea necesario
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (cursor.moveToNext());
-        }
-        return cursor;
-    }
-
-    public Cursor seleccionarIncidencias(SQLiteDatabase db) {
-        return db.rawQuery("SELECT * FROM " + TABLA_INCIDENCIAS, null);
-    }
-
-    // Método para seleccionar datos de la tabla tecnicos
-    public Cursor seleccionarTecnicos(SQLiteDatabase db) {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TECNICOS, null);
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String sector = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(TECNICO_SECTOR)));
-                    String clave = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(TECNICO_CLAVE)));
-                    String password = DB_Encriptacion.decrypt(cursor.getString(cursor.getColumnIndex(TECNICO_PASSWORD)));
-                    // Usa los datos desencriptados según sea necesario
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } while (cursor.moveToNext());
-        }
-        return cursor;
-    }
 
     public boolean verificarCredenciales(String tabla, String usuarioColumna, String passwordColumna, String usuario, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + tabla + " WHERE " + usuarioColumna + " = ? AND " + passwordColumna + " = ?",
-                new String[]{usuario, password});
-        boolean existe = cursor.getCount() > 0;
+        Cursor cursor = db.rawQuery("SELECT " + passwordColumna + " FROM " + tabla + " WHERE " + usuarioColumna + " = ?",
+                new String[]{usuario});
+
+        if (cursor.moveToFirst()) {
+            String passwordCifrada = cursor.getString(0);
+            try {
+                String passwordDesencriptada = DB_Encriptacion.decrypt(passwordCifrada);
+                if (passwordDesencriptada.equals(password)) {
+                    cursor.close();
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         cursor.close();
-        return existe;
+        return false;
     }
+
 }
