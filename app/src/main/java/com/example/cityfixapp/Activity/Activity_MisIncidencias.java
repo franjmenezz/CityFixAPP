@@ -36,28 +36,8 @@ public class Activity_MisIncidencias extends AppCompatActivity {
         rvMisIncidencias.setLayoutManager(new LinearLayoutManager(this));
 
         // Cargar las incidencias del ciudadano
-        List<String> listaIncidencias = obtenerIncidenciasDelCiudadano();
 
-        // Configurar el adaptador
-        adapter = new MisIncidencias_Adapter(listaIncidencias);
-        rvMisIncidencias.setAdapter(adapter);
     }
 
-    private List<String> obtenerIncidenciasDelCiudadano() {
-        List<String> incidencias = new ArrayList<>();
-        Cursor cursor = dbConexion.seleccionarIncidenciasPorCiudadano(dbConexion.getReadableDatabase(), idCiudadano);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndex("titulo");
-            if (columnIndex != -1) { // Verifica si la columna existe
-                do {
-                    incidencias.add(cursor.getString(columnIndex));
-                } while (cursor.moveToNext());
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
-        return incidencias;
-    }
 }
