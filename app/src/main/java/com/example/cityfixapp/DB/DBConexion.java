@@ -89,8 +89,14 @@ public class DBConexion extends SQLiteOpenHelper {
 
         // Insertar un administrador predefinido
         ContentValues valores = new ContentValues();
-        valores.put(ADMIN_USUARIO, "admin"); // Usuario predefinido
-        valores.put(ADMIN_PASSWORD, "1234"); // Contraseña predefinida
+        try {
+            valores.put(ADMIN_USUARIO, "admin");
+            valores.put(ADMIN_PASSWORD, DB_Encriptacion.encrypt("1234")); // Ahora cifrado
+            db.insert(TABLA_ADMINISTRADOR, null, valores);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Contraseña predefinida
         db.insert(TABLA_ADMINISTRADOR, null, valores);
     }
 
