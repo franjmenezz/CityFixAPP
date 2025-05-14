@@ -10,47 +10,58 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cityfixapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.ViewHolder> {
 
-    private final List<String> menuItems;
-    private final OnItemClickListener listener;
+    private final List<String> listaOriginal;
+    private List<String> listaFiltrada;
 
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public Ciudadano_Adapter(List<String> menuItems, OnItemClickListener listener) {
-        this.menuItems = menuItems;
-        this.listener = listener;
+    public Ciudadano_Adapter(List<String> incidencias) {
+        this.listaOriginal = new ArrayList<>(incidencias);
+        this.listaFiltrada = incidencias;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Ciudadano_Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_menu, parent, false);
-        return new ViewHolder(view);
+                .inflate(R.layout.item_incidencia, parent, false);
+        return new Ciudadano_Adapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(menuItems.get(position));
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(position));
+    public void onBindViewHolder(@NonNull Ciudadano_Adapter.ViewHolder holder, int position) {
+        holder.tvIncidencia.setText(listaFiltrada.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return menuItems.size();
+        return listaFiltrada.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+    public void filtrar(String texto) {
+        if (texto.isEmpty()) {
+            listaFiltrada = new ArrayList<>(listaOriginal);
+        } else {
+            List<String> filtrada = new ArrayList<>();
+            for (String item : listaOriginal) {
+                if (item.toLowerCase().contains(texto.toLowerCase())) {
+                    filtrada.add(item);
+                }
+            }
+            listaFiltrada = filtrada;
+        }
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(@NonNull View itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvIncidencia;
+
+        ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tvMenuItem);
+            tvIncidencia = itemView.findViewById(R.id.tvIncidencia);
         }
     }
 }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 public class DBConexion extends SQLiteOpenHelper {
@@ -121,16 +123,31 @@ public class DBConexion extends SQLiteOpenHelper {
             String passwordCifrada = cursor.getString(0);
             try {
                 String passwordDesencriptada = DB_Encriptacion.decrypt(passwordCifrada);
+                Log.d("LOGIN_DEBUG", "Desencriptada: " + passwordDesencriptada + " vs ingresada: " + password);
                 if (passwordDesencriptada.equals(password)) {
                     cursor.close();
                     return true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("LOGIN_ERROR", "Error desencriptando: " + e.getMessage());
             }
         }
+
         cursor.close();
         return false;
     }
+    public int obtenerIdCiudadano(String usuario) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id FROM ciudadano WHERE usuario = ?", new String[]{usuario});
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            cursor.close();
+            return id;
+        }
+        cursor.close();
+        return -1;
+    }
+
+
 
 }

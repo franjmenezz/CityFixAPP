@@ -33,6 +33,7 @@ public class Login extends AppCompatActivity {
                 String inputUsername = etEmail.getText().toString().trim();
                 String inputPassword = etPassword.getText().toString().trim();
 
+
                 if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
                     Toast.makeText(Login.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                     return;
@@ -40,10 +41,21 @@ public class Login extends AppCompatActivity {
 
                 if (VerificarUsuarioCiudadano(inputUsername, inputPassword)) {
                     Toast.makeText(Login.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Login.this, Activity_Ciudadano.class);
-                    startActivity(intent);
-                    finish();
-                } else {
+
+                    DBConexion dbConexion = new DBConexion(Login.this);
+                    int idCiudadano = dbConexion.obtenerIdCiudadano(inputUsername);
+
+                    if (idCiudadano != -1) {
+                        Intent intent = new Intent(Login.this, Activity_Ciudadano.class);
+                        intent.putExtra("id_ciudadano", idCiudadano);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(Login.this, "Error al obtener el ID del usuario", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                else {
                     Toast.makeText(Login.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -82,4 +94,5 @@ public class Login extends AppCompatActivity {
         DBConexion dbConexion = new DBConexion(this);
         return dbConexion.verificarCredenciales("ciudadano", "usuario", "password", username, password);
     }
+
 }

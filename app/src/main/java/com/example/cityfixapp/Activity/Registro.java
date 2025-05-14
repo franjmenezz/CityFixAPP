@@ -26,7 +26,7 @@ public class Registro extends AppCompatActivity {
         EditText etNombre = findViewById(R.id.Nombre);
         EditText etUsuario = findViewById(R.id.Usuario);
         EditText etEmail = findViewById(R.id.Email);
-        EditText etContraseña = findViewById(R.id.Contraseña);
+        EditText etPassword = findViewById(R.id.etPassword);
         EditText etTelefono = findViewById(R.id.Telefono);
         Button btnRegistrar = findViewById(R.id.BTAceptarRegistro);
         Button btnCancelar = findViewById(R.id.BTCancelarRegistro);
@@ -38,13 +38,13 @@ public class Registro extends AppCompatActivity {
                 String nombre = etNombre.getText().toString().trim();
                 String usuario = etUsuario.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
-                String contraseña = etContraseña.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
                 String telefono = etTelefono.getText().toString().trim();
 
-                if (dni.isEmpty() || nombre.isEmpty() || email.isEmpty() || contraseña.isEmpty() || telefono.isEmpty()) {
+                if (dni.isEmpty() || nombre.isEmpty() || email.isEmpty() || password.isEmpty() || telefono.isEmpty()) {
                     Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    registrarCiudadano(dni, nombre, usuario, email, contraseña, telefono);
+                    registrarCiudadano(dni, nombre, usuario, email, password, telefono);
                 }
             }
         });

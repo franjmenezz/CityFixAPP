@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,10 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
         // Configurar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            v.setPadding(0, insets.getSystemWindowInsetTop(), 0, 0);
+            return insets;
+        });
 
         // Configurar RecyclerView
         RecyclerView recyclerView = findViewById(R.id.rvFunciones);

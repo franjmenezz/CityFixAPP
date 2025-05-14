@@ -4,9 +4,10 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Activity.Login">
 
-    android:padding="16dp">
-
+    <!-- Logo -->
     <ImageView
         android:id="@+id/logo"
         android:layout_width="329dp"
@@ -20,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2" />
 
+    <!-- Título -->
     <TextView
         android:id="@+id/tvInicioSesion"
         android:layout_width="wrap_content"
@@ -31,84 +33,93 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/Usuario"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <EditText
-        android:id="@+id/Usuario"
+    <!-- Usuario -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutUsuario"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
-        android:hint="Nombre de Usuario"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvInicioSesion"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvInicioSesion" />
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de Usuario"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/Contraseña"
+    <!-- Contraseña con toggle -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="32dp"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:endIconMode="password_toggle"
+        app:layout_constraintTop_toBottomOf="@id/layoutUsuario"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Usuario" />
+        app:layout_constraintEnd_toEndOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Contraseña"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Botón Continuar -->
     <Button
         android:id="@+id/BTAceptarlogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"
         android:text="Continuar"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Contraseña" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botón Registrar -->
     <Button
         android:id="@+id/BTRegistrar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="32dp"
-        android:text="Registrar"
         android:backgroundTint="@color/blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:text="Registrar"
+        app:layout_constraintTop_toBottomOf="@id/BTAceptarlogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/BTAceptarlogin" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botón Login Administrador -->
     <Button
         android:id="@+id/BTLoginAdmin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/blue"
         android:text="Iniciar sesión como Administrador"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/BTRegistrar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/BTRegistrar" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Botón Login Técnico -->
     <Button
         android:id="@+id/BTLoginTecnico"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/blue"
         android:text="Iniciar sesión como Técnico"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/BTLoginAdmin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/BTLoginAdmin" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

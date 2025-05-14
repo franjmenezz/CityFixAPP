@@ -31,6 +31,7 @@
         <activity android:name=".Activity.LoginAdministrador"/>
         <activity android:name=".Activity.Activity_ConexionDB" />
         <activity android:name=".Activity.LoginTecnico"/>
+        <activity android:name=".Activity.Activity_Ciudadano"/>
 
     </application>
 
