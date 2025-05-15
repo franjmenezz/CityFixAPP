@@ -1,59 +1,131 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Activity_CrearIncidencia">
+    android:padding="16dp"
+    android:fillViewport="true">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#096b7b"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etTitulo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Título"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        <!-- Título de pantalla -->
+        <TextView
+            android:id="@+id/tvTituloPantalla"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrar Incidencia"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <EditText
-        android:id="@+id/etDescripcion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Descripción"
-        app:layout_constraintTop_toBottomOf="@id/etTitulo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        <!-- Campo: Título -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloPantalla"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Título de la incidencia" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etEstado"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Estado"
-        app:layout_constraintTop_toBottomOf="@id/etDescripcion"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        <!-- Campo: Descripción -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutDescripcion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutTitulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripción"
+                android:inputType="textMultiLine"
+                android:minLines="3" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnGuardarIncidencia"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Guardar Incidencia"
-        app:layout_constraintTop_toBottomOf="@id/etEstado"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp" />
+        <!-- Campo: Ubicación -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutUbicacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutDescripcion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ubicación seleccionada"
+                android:focusable="false"
+                android:clickable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Botón: Seleccionar ubicación -->
+        <Button
+            android:id="@+id/btnSeleccionarUbicacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Elegir en el mapa"
+            android:backgroundTint="#096b7b"
+            android:textColor="@android:color/white"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutUbicacion"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp" />
+
+        <!-- Botón: Seleccionar foto -->
+        <Button
+            android:id="@+id/btnSeleccionarFoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar foto"
+            android:backgroundTint="#096b7b"
+            android:textColor="@android:color/white"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/btnSeleccionarUbicacion"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp" />
+
+        <!-- Vista previa de imagen -->
+        <ImageView
+            android:id="@+id/ivFoto"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_buscador"
+            app:layout_constraintTop_toBottomOf="@id/btnSeleccionarFoto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Botón: Guardar incidencia -->
+        <Button
+            android:id="@+id/btnGuardarIncidencia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Guardar incidencia"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#096b7b"
+            android:textColor="@android:color/white"
+            app:cornerRadius="10dp"
+            app:layout_constraintTop_toBottomOf="@id/ivFoto"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

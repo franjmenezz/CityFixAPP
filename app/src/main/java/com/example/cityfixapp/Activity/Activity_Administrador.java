@@ -64,7 +64,6 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
             return true;
         }
         if (item.getItemId() == R.id.action_user) {
-            showPasswordDialog();
             return true;
         }
         if (item.getItemId() == R.id.action_logout) {
@@ -74,48 +73,6 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
         return super.onOptionsItemSelected(item);
     }
 
-    private void showPasswordDialog() {
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.alerta_password, null);
-        EditText passwordInput = dialogView.findViewById(R.id.password_input);
-
-        new AlertDialog.Builder(this)
-                .setTitle("Introduzca su contraseña:")
-                .setView(dialogView)
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String password = passwordInput.getText().toString();
-                        // Aquí puedes agregar la lógica para verificar la contraseña
-                        if (verifyPassword(password)) {
-                            Intent intent = new Intent(Activity_Administrador.this, Usuario.class);
-                            startActivity(intent);
-                        } else {
-                            // Mostrar un mensaje de error si la contraseña es incorrecta
-                            new AlertDialog.Builder(Activity_Administrador.this)
-                                    .setTitle("Error")
-                                    .setMessage("Contraseña incorrecta")
-                                    .setPositiveButton("Aceptar", null)
-                                    .show();
-                        }
-                    }
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
-    }
-
-    private boolean verifyPassword(String password) {
-        String userType = getIntent().getStringExtra("userType");
-
-        if ("admin".equals(userType)) {
-            return "1234".equals(password);
-        } else if ("ciudadano".equals(userType)) {
-            return "4321".equals(password);
-        }else {
-            return false; // Contraseña incorrecta
-        }
-
-    }
 
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".Activity.Activity_ConexionDB"
         android:allowBackup="true"
@@ -32,6 +34,17 @@
         <activity android:name=".Activity.Activity_ConexionDB" />
         <activity android:name=".Activity.LoginTecnico"/>
         <activity android:name=".Activity.Activity_Ciudadano"/>
+        <activity android:name=".Activity.Activity_CrearIncidencia"/>
+        <activity android:name=".Activity.Activity_SeleccionarUbicacion"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAO3eqxRGfxSwpaYGLp_mdeqlbGUYutmD8" />
+
+
+
+
+
 
     </application>
 

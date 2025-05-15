@@ -1,13 +1,20 @@
 package com.example.cityfixapp.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -65,6 +72,58 @@ public class Activity_Ciudadano extends AppCompatActivity {
                 adapter.filtrar(s.toString());
             }
         });
+
+        Button btnNuevaIncidencia = findViewById(R.id.btnNuevaIncidencia);
+        btnNuevaIncidencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Activity_Ciudadano.this, Activity_CrearIncidencia.class);
+                intent.putExtra("id_ciudadano", idCiudadano); // Pasamos el ID
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent intent = new Intent(this, Configuracion.class);
+            startActivity(intent);
+            return true;
+        }
+        if (item.getItemId() == R.id.action_user) {
+            return true;
+        }
+        if (item.getItemId() == R.id.action_logout) {
+            showLogoutConfirmationDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void showLogoutConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Cerrando Sesión")
+                .setMessage("¿Estás seguro de que deseas cerrar sesión?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Activity_Ciudadano.this, Login.class);
+                        startActivity(intent);
+                        finish(); // Finaliza la actividad principal para que no se pueda volver atrás
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private List<String> cargarIncidencias(int idCiudadano) {

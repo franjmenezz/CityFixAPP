@@ -62,11 +62,15 @@ public class DBConexion extends SQLiteOpenHelper {
             CIUDADANO_TELEFONO + " TEXT NOT NULL, " +
             CIUDADANO_USUARIO + " TEXT NOT NULL, " +
             CIUDADANO_DNI + " TEXT NOT NULL);";
-    private static final String CREAR_TABLA_INCIDENCIAS = "CREATE TABLE " + TABLA_INCIDENCIAS +
-            " (" + INCIDENCIA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            INCIDENCIA_TITULO + " TEXT NOT NULL, " +
-            INCIDENCIA_DESCRIPCION + " TEXT NOT NULL, " +
-            INCIDENCIA_ESTADO + " TEXT NOT NULL);";
+    private static final String CREAR_TABLA_INCIDENCIAS = "CREATE TABLE incidencias (" +
+            "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "titulo TEXT NOT NULL, " +
+            "descripcion TEXT NOT NULL, " +
+            "ubicacion TEXT, " +
+            "foto BLOB, " +
+            "fecha_hora TEXT NOT NULL, " +
+            "estado TEXT NOT NULL, " +
+            "id_ciudadano INTEGER NOT NULL);";
 
 
     // Sentencia SQL para la creación de la tabla tecnicos
