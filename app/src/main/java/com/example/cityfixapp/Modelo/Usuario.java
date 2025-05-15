@@ -1,4 +1,4 @@
-package com.example.cityfixapp.Activity;
+package com.example.cityfixapp.Modelo;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

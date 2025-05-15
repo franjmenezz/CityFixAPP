@@ -23,12 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cityfixapp.Adapter.Ciudadano_Adapter;
 
+import com.example.cityfixapp.Modelo.Incidencia;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import com.example.cityfixapp.Modelo.Incidencia;
+
+
 
 public class Activity_Ciudadano extends AppCompatActivity {
 
@@ -36,6 +39,8 @@ public class Activity_Ciudadano extends AppCompatActivity {
     private Ciudadano_Adapter adapter;
     private DBConexion dbConexion;
     private int idCiudadano;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +62,9 @@ public class Activity_Ciudadano extends AppCompatActivity {
         idCiudadano = getIntent().getIntExtra("id_ciudadano", -1);
 
 
-        List<String> listaIncidencias = cargarIncidencias(idCiudadano);
+        List<Incidencia> listaIncidencias = cargarIncidencias(idCiudadano);
         adapter = new Ciudadano_Adapter(listaIncidencias);
+
         rvMisIncidencias.setAdapter(adapter);
 
 
@@ -126,23 +132,23 @@ public class Activity_Ciudadano extends AppCompatActivity {
                 .show();
     }
 
-    private List<String> cargarIncidencias(int idCiudadano) {
-        List<String> lista = new ArrayList<>();
+    private List<Incidencia> cargarIncidencias(int idCiudadano) {
+        List<Incidencia> lista = new ArrayList<>();
         SQLiteDatabase db = dbConexion.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT titulo, estado FROM incidencias WHERE id_ciudadano = ?", new String[]{String.valueOf(idCiudadano)});
+        Cursor cursor = db.rawQuery("SELECT titulo, estado, fecha_hora FROM incidencias WHERE id_ciudadano = ? ORDER BY _id DESC", new String[]{String.valueOf(idCiudadano)});
 
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String titulo = cursor.getString(0);
-                String estado = cursor.getString(1);
-                lista.add(titulo + " (" + estado + ")");
-            }
-            cursor.close();
+        while (cursor.moveToNext()) {
+            String titulo = cursor.getString(0);
+            String estado = cursor.getString(1);
+            String fecha = cursor.getString(2);
+            lista.add(new Incidencia(titulo, estado, fecha));
         }
 
+        cursor.close();
         return lista;
     }
+
 
 
 }

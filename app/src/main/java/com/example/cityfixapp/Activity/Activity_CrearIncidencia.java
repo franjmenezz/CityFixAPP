@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
@@ -23,10 +26,13 @@ import java.util.Locale;
 
 public class Activity_CrearIncidencia extends AppCompatActivity {
 
+    private static final int REQUEST_UBICACION = 1001;
+    private static final int REQUEST_IMAGE_PICK = 2001;
+
     private EditText etTitulo, etDescripcion, etUbicacion;
     private Button btnGuardarIncidencia, btnSeleccionarUbicacion, btnSeleccionarFoto;
     private ImageView ivFotoSeleccionada;
-    private Uri fotoUri; // para almacenar temporalmente la URI de la imagen
+    private Uri fotoUri;
     private int idCiudadano;
     private DBConexion dbConexion;
 
@@ -35,9 +41,13 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_incidencia);
 
-        dbConexion = new DBConexion(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            v.setPadding(0, insets.getInsets(WindowInsetsCompat.Type.systemBars()).top, 0, 0);
+            return insets;
+        });
 
-        // Obtén el ID del ciudadano desde el intent
+
+        dbConexion = new DBConexion(this);
         idCiudadano = getIntent().getIntExtra("id_ciudadano", -1);
 
         // Inicializar vistas
@@ -52,12 +62,18 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         // Guardar incidencia
         btnGuardarIncidencia.setOnClickListener(v -> guardarIncidencia());
 
+        // Seleccionar ubicación desde el mapa
         btnSeleccionarUbicacion.setOnClickListener(v -> {
             Intent intent = new Intent(this, Activity_SeleccionarUbicacion.class);
-            startActivityForResult(intent, 1001);
+            startActivityForResult(intent, REQUEST_UBICACION);
         });
 
-
+        // Seleccionar foto desde galería
+        btnSeleccionarFoto.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(intent, REQUEST_IMAGE_PICK);
+        });
     }
 
     private void guardarIncidencia() {
@@ -80,7 +96,7 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         valores.put("fecha_hora", fechaHora);
         valores.put("id_ciudadano", idCiudadano);
 
-        // Guardar foto si hay
+        // Guardar foto si se seleccionó
         if (fotoUri != null) {
             try {
                 InputStream inputStream = getContentResolver().openInputStream(fotoUri);
@@ -104,13 +120,19 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
+
+        if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK && data != null) {
             double lat = data.getDoubleExtra("lat", 0);
             double lng = data.getDoubleExtra("lng", 0);
             String ubicacion = "Lat: " + lat + ", Lng: " + lng;
             etUbicacion.setText(ubicacion);
         }
+
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            fotoUri = data.getData();
+            if (fotoUri != null) {
+                ivFotoSeleccionada.setImageURI(fotoUri); // Mostrar imagen
+            }
+        }
     }
-
-
 }
