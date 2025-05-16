@@ -2,6 +2,8 @@ package com.example.cityfixapp.Activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,11 +49,9 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
             return insets;
         });
 
-
         dbConexion = new DBConexion(this);
         idCiudadano = getIntent().getIntExtra("id_ciudadano", -1);
 
-        // Inicializar vistas
         etTitulo = findViewById(R.id.etTitulo);
         etDescripcion = findViewById(R.id.etDescripcion);
         etUbicacion = findViewById(R.id.etUbicacion);
@@ -59,16 +60,13 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         btnSeleccionarFoto = findViewById(R.id.btnSeleccionarFoto);
         ivFotoSeleccionada = findViewById(R.id.ivFoto);
 
-        // Guardar incidencia
         btnGuardarIncidencia.setOnClickListener(v -> guardarIncidencia());
 
-        // Seleccionar ubicación desde el mapa
         btnSeleccionarUbicacion.setOnClickListener(v -> {
             Intent intent = new Intent(this, Activity_SeleccionarUbicacion.class);
             startActivityForResult(intent, REQUEST_UBICACION);
         });
 
-        // Seleccionar foto desde galería
         btnSeleccionarFoto.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
@@ -96,12 +94,18 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         valores.put("fecha_hora", fechaHora);
         valores.put("id_ciudadano", idCiudadano);
 
-        // Guardar foto si se seleccionó
+        // Comprimir y guardar foto
         if (fotoUri != null) {
             try {
                 InputStream inputStream = getContentResolver().openInputStream(fotoUri);
-                byte[] fotoBytes = new byte[inputStream.available()];
-                inputStream.read(fotoBytes);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                // Redimensionar y comprimir
+                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 800, 800, true);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                scaled.compress(Bitmap.CompressFormat.JPEG, 60, stream); // 60% calidad
+                byte[] fotoBytes = stream.toByteArray();
+
                 valores.put("foto", fotoBytes);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,14 +128,13 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK && data != null) {
             double lat = data.getDoubleExtra("lat", 0);
             double lng = data.getDoubleExtra("lng", 0);
-            String ubicacion = "Lat: " + lat + ", Lng: " + lng;
-            etUbicacion.setText(ubicacion);
+            etUbicacion.setText("Lat: " + lat + ", Lng: " + lng);
         }
 
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             fotoUri = data.getData();
             if (fotoUri != null) {
-                ivFotoSeleccionada.setImageURI(fotoUri); // Mostrar imagen
+                ivFotoSeleccionada.setImageURI(fotoUri);
             }
         }
     }
