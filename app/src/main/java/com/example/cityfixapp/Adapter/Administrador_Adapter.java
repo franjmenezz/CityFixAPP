@@ -1,92 +1,105 @@
 package com.example.cityfixapp.Adapter;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.cityfixapp.Modelo.Incidencia;
+
+import java.util.Collections;
+import java.util.Comparator;
+
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import com.example.cityfixapp.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Administrador_Adapter extends RecyclerView.Adapter<Administrador_Adapter.ViewHolder> {
-    private final List<String> nameList;
-    private final OnItemClickListener listener;
-    private final List<Boolean> subMenuVisibilityList;
+    private final Context context;
+    private List<Incidencia> listaOriginal;
+    private List<Incidencia> listaFiltrada;
 
-    public Administrador_Adapter(List<String> nameList, OnItemClickListener listener) {
-        this.nameList = nameList;
-        this.listener = listener;
-        this.subMenuVisibilityList = new ArrayList<>(Collections.nCopies(nameList.size(), false));
+    public Administrador_Adapter(Context context, List<Incidencia> lista) {
+        this.context = context;
+        this.listaOriginal = lista;
+        this.listaFiltrada = new ArrayList<>(lista);
+
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_funciones, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_incidencia, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String itemName = nameList.get(position);
-        holder.textView.setText(itemName);
+        Incidencia inc = listaFiltrada.get(position);
 
-        // Controlar la visibilidad de los submenús
-        holder.menuIncidencias.setVisibility(View.GONE);
-        holder.menuAdministradores.setVisibility(View.GONE);
-        holder.menuTecnicos.setVisibility(View.GONE);
-        holder.menuCiudadanos.setVisibility(View.GONE);
+        holder.tvTitulo.setText(inc.titulo);
+        holder.tvEstado.setText("Estado: " + inc.estado);
+        holder.tvFecha.setText("Fecha: " + inc.fechaHora);
 
-        if (subMenuVisibilityList.get(position)) {
-            switch (itemName) {
-                case "Incidencias":
-                    holder.menuIncidencias.setVisibility(View.VISIBLE);
-                    break;
-                case "Administradores":
-                    holder.menuAdministradores.setVisibility(View.VISIBLE);
-                    break;
-                case "Técnicos":
-                    holder.menuTecnicos.setVisibility(View.VISIBLE);
-                    break;
-                case "Ciudadanos":
-                    holder.menuCiudadanos.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
+        // Cambiar el color del texto del estado según su valor
+        switch (inc.estado.toLowerCase()) {
+            case "completada":
+                holder.tvEstado.setTextColor(Color.parseColor("#4CAF50")); // Verde
+                break;
+            case "pendiente":
+                holder.tvEstado.setTextColor(Color.parseColor("#FFC107")); // Amarillo
+                break;
+            case "denegada":
+                holder.tvEstado.setTextColor(Color.parseColor("#F44336")); // Rojo
+                break;
+            default:
+                holder.tvEstado.setTextColor(Color.BLACK); // Negro por defecto
+                break;
         }
 
-        // Alternar visibilidad al hacer clic en el título
-        holder.textView.setOnClickListener(v -> {
-            boolean isVisible = subMenuVisibilityList.get(position);
-            subMenuVisibilityList.set(position, !isVisible);
-            notifyItemChanged(position);
-        });
-
-        // Configurar los botones del submenú
-        holder.btMostrarIncidencias.setOnClickListener(v -> listener.mostrarIncidencias());
-        holder.btNuevoAdministrador.setOnClickListener(v -> listener.nuevoAdministrador());
-        holder.btModificarAdministrador.setOnClickListener(v -> listener.modificarAdministrador());
-        holder.btMostrarAdministradores.setOnClickListener(v -> listener.mostrarAdministradores());
-        holder.btNuevoTecnico.setOnClickListener(v -> listener.nuevoTecnico());
-        holder.btModificarTecnico.setOnClickListener(v -> listener.modificarTecnico());
-        holder.btMostrarTecnicos.setOnClickListener(v -> listener.mostrarTecnicos());
-        holder.btModificarCiudadano.setOnClickListener(v -> listener.modificarCiudadano());
-        holder.btMostrarCiudadanos.setOnClickListener(v -> listener.mostrarCiudadanos());
+        // El resto de la configuración del ViewHolder...
     }
+
 
     @Override
     public int getItemCount() {
-        return nameList.size();
+        return listaFiltrada.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTitulo, tvEstado, tvFecha;
+        Button btnVerDetalles;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTitulo = itemView.findViewById(R.id.tvTitulo);
+            tvEstado = itemView.findViewById(R.id.tvEstado);
+            tvFecha = itemView.findViewById(R.id.tvFecha);
+            btnVerDetalles = itemView.findViewById(R.id.btnVerDetalles);
+        }
+    }
+
+    public void filtrar(String texto) {
+        listaFiltrada.clear();
+        if (texto.isEmpty()) {
+            listaFiltrada.addAll(listaOriginal);
+        } else {
+            String textoLower = texto.toLowerCase();
+            for (Incidencia inc : listaOriginal) {
+                if (inc.titulo.toLowerCase().contains(textoLower)) {
+                    listaFiltrada.add(inc);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {
@@ -101,38 +114,18 @@ public class Administrador_Adapter extends RecyclerView.Adapter<Administrador_Ad
         void mostrarCiudadanos();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        private final ConstraintLayout menuIncidencias;
-        private final ConstraintLayout menuAdministradores;
-        private final ConstraintLayout menuTecnicos;
-        private final ConstraintLayout menuCiudadanos;
-        private final Button btMostrarIncidencias;
-        private final Button btNuevoAdministrador;
-        private final Button btModificarAdministrador;
-        private final Button btMostrarAdministradores;
-        private final Button btNuevoTecnico;
-        private final Button btModificarTecnico;
-        private final Button btMostrarTecnicos;
-        private final Button btModificarCiudadano;
-        private final Button btMostrarCiudadanos;
+    public void ordenarPorFecha() {
+        Collections.sort(listaFiltrada, (a, b) -> b.fechaHora.compareTo(a.fechaHora));
+        notifyDataSetChanged();
+    }
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textView = itemView.findViewById(R.id.item_funcion);
-            menuIncidencias = itemView.findViewById(R.id.MenuIncidencias);
-            menuAdministradores = itemView.findViewById(R.id.MenuAdministradores);
-            menuTecnicos = itemView.findViewById(R.id.MenuTecnicos);
-            menuCiudadanos = itemView.findViewById(R.id.MenuCiudadanos);
-            btMostrarIncidencias = itemView.findViewById(R.id.btMostrarIncidencias);
-            btNuevoAdministrador = itemView.findViewById(R.id.btNuevoAdministrador);
-            btModificarAdministrador = itemView.findViewById(R.id.btModificarAdministrador);
-            btMostrarAdministradores = itemView.findViewById(R.id.btMostrarAdministradores);
-            btNuevoTecnico = itemView.findViewById(R.id.btNuevoTecnico);
-            btModificarTecnico = itemView.findViewById(R.id.btModicarTecnico);
-            btMostrarTecnicos = itemView.findViewById(R.id.btMostrarTecnicos);
-            btModificarCiudadano = itemView.findViewById(R.id.btModificarCiudadano);
-            btMostrarCiudadanos = itemView.findViewById(R.id.btMostrarCiudadanos);
-        }
+    public void ordenarPorNombreAZ() {
+        Collections.sort(listaFiltrada, Comparator.comparing(inc -> inc.titulo.toLowerCase()));
+        notifyDataSetChanged();
+    }
+
+    public void ordenarPorNombreZA() {
+        Collections.sort(listaFiltrada, (a, b) -> b.titulo.toLowerCase().compareTo(a.titulo.toLowerCase()));
+        notifyDataSetChanged();
     }
 }

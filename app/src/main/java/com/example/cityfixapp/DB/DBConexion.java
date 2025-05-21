@@ -9,6 +9,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.cityfixapp.Modelo.Incidencia;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBConexion extends SQLiteOpenHelper {
     private static final String DB_NAME = "CityFixDB";
     private static final int DB_VERSION = 1;
@@ -150,6 +155,30 @@ public class DBConexion extends SQLiteOpenHelper {
         }
         cursor.close();
         return -1;
+    }
+    public List<Incidencia> obtenerTodasLasIncidencias() {
+        List<Incidencia> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT _id, titulo, descripcion, ubicacion, estado, fecha_hora, foto FROM incidencias ORDER BY _id DESC",
+                null
+        );
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String titulo = cursor.getString(1);
+            String descripcion = cursor.getString(2);
+            String ubicacion = cursor.getString(3);
+            String estado = cursor.getString(4);
+            String fechaHora = cursor.getString(5);
+            byte[] foto = cursor.getBlob(6);
+
+            lista.add(new Incidencia(id, titulo, descripcion, ubicacion, estado, fechaHora, foto));
+        }
+
+        cursor.close();
+        return lista;
     }
 
 

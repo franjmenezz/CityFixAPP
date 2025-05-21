@@ -3,34 +3,28 @@ package com.example.cityfixapp.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cityfixapp.Adapter.Administrador_Adapter;
+import com.example.cityfixapp.Adapter.MenuAdministradorAdapter;
 import com.example.cityfixapp.R;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class Activity_Administrador extends AppCompatActivity implements Administrador_Adapter.OnItemClickListener {
+public class Activity_Administrador extends AppCompatActivity implements MenuAdministradorAdapter.OnMenuClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrador);
 
-        // Configurar Toolbar
+        // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
@@ -38,17 +32,15 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
             return insets;
         });
 
-        // Configurar RecyclerView
+        // RecyclerView con adaptador de menú
         RecyclerView recyclerView = findViewById(R.id.rvFunciones);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Lista de menús
-        List<String> menuItems = Arrays.asList("Incidencias", "Administradores", "Técnicos", "Ciudadanos");
-
-        // Configurar adaptador
-        Administrador_Adapter adapter = new Administrador_Adapter(menuItems, this);
+        MenuAdministradorAdapter adapter = new MenuAdministradorAdapter(this);
         recyclerView.setAdapter(adapter);
     }
+
+    // Menú superior
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -59,11 +51,7 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, Configuracion.class);
-            startActivity(intent);
-            return true;
-        }
-        if (item.getItemId() == R.id.action_user) {
+            startActivity(new Intent(this, Configuracion.class));
             return true;
         }
         if (item.getItemId() == R.id.action_logout) {
@@ -73,66 +61,52 @@ public class Activity_Administrador extends AppCompatActivity implements Adminis
         return super.onOptionsItemSelected(item);
     }
 
-
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Cerrando Sesión")
+                .setTitle("Cerrando sesión")
                 .setMessage("¿Estás seguro de que deseas cerrar sesión?")
-                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Activity_Administrador.this, Login.class);
-                        startActivity(intent);
-                        finish(); // Finaliza la actividad principal para que no se pueda volver atrás
-                    }
+                .setPositiveButton("Sí", (dialog, which) -> {
+                    startActivity(new Intent(Activity_Administrador.this, Login.class));
+                    finish();
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
 
-
-    @Override
-    public void mostrarIncidencias() {
-        // Implementar lógica para mostrar incidencias
+    // Implementación del listener del menú
+    @Override public void mostrarIncidencias() {
+        startActivity(new Intent(this, Activity_AdministrarIncidencias.class));
     }
 
-    @Override
-    public void nuevoAdministrador() {
-        // Implementar lógica para nuevo administrador
+    @Override public void nuevoAdministrador() {
+        // Por implementar
     }
 
-    @Override
-    public void modificarAdministrador() {
-        // Implementar lógica para modificar administrador
+    @Override public void modificarAdministrador() {
+        // Por implementar
     }
 
-    @Override
-    public void mostrarAdministradores() {
-        // Implementar lógica para mostrar administradores
+    @Override public void mostrarAdministradores() {
+        // Por implementar
     }
 
-    @Override
-    public void nuevoTecnico() {
-        // Implementar lógica para nuevo técnico
+    @Override public void nuevoTecnico() {
+        // Por implementar
     }
 
-    @Override
-    public void modificarTecnico() {
-        // Implementar lógica para modificar técnico
+    @Override public void modificarTecnico() {
+        // Por implementar
     }
 
-    @Override
-    public void mostrarTecnicos() {
-        // Implementar lógica para mostrar técnicos
+    @Override public void mostrarTecnicos() {
+        // Por implementar
     }
 
-    @Override
-    public void modificarCiudadano() {
-        // Implementar lógica para modificar ciudadano
+    @Override public void modificarCiudadano() {
+        // Por implementar
     }
 
-    @Override
-    public void mostrarCiudadanos() {
-        // Implementar lógica para mostrar ciudadanos
+    @Override public void mostrarCiudadanos() {
+        // Por implementar
     }
 }
