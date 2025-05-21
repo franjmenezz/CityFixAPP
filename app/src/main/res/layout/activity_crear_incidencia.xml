@@ -80,25 +80,6 @@
                     android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Campo: Ubicación -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layoutUbicacion"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDescripcion"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etUbicacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ubicación seleccionada"
-                    android:focusable="false"
-                    android:clickable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Botón: Seleccionar ubicación -->
             <Button
                 android:id="@+id/btnSeleccionarUbicacion"
                 android:layout_width="wrap_content"
@@ -108,8 +89,22 @@
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutUbicacion"
+                app:layout_constraintTop_toBottomOf="@id/layoutDescripcion"
                 app:layout_constraintStart_toStartOf="parent" />
+
+            <!-- Campo: Ubicación -->
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapViewUbicacion"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@id/btnSeleccionarUbicacion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <!-- Botón: Seleccionar ubicación -->
+
 
             <!-- Botón: Seleccionar foto -->
             <Button
@@ -121,7 +116,7 @@
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/btnSeleccionarUbicacion"
+                app:layout_constraintTop_toBottomOf="@id/mapViewUbicacion"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <!-- Vista previa de imagen -->

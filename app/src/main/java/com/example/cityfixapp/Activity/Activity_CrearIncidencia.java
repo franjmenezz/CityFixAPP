@@ -20,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -32,7 +34,12 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
     private static final int REQUEST_UBICACION = 1001;
     private static final int REQUEST_IMAGE_PICK = 2001;
 
-    private EditText etTitulo, etDescripcion, etUbicacion;
+    private MapView mapView;
+    private double latitudSeleccionada = 0;
+    private double longitudSeleccionada = 0;
+
+
+    private EditText etTitulo, etDescripcion;
     private Button btnGuardarIncidencia, btnSeleccionarUbicacion, btnSeleccionarFoto;
     private ImageView ivFotoSeleccionada;
     private Uri fotoUri;
@@ -54,7 +61,7 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
 
         etTitulo = findViewById(R.id.etTitulo);
         etDescripcion = findViewById(R.id.etDescripcion);
-        etUbicacion = findViewById(R.id.etUbicacion);
+
         btnGuardarIncidencia = findViewById(R.id.btnGuardarIncidencia);
         btnSeleccionarUbicacion = findViewById(R.id.btnSeleccionarUbicacion);
         btnSeleccionarFoto = findViewById(R.id.btnSeleccionarFoto);
@@ -72,12 +79,22 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
             intent.setType("image/*");
             startActivityForResult(intent, REQUEST_IMAGE_PICK);
         });
+
+        mapView = findViewById(R.id.mapViewUbicacion);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        try {
+            MapsInitializer.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void guardarIncidencia() {
         String titulo = etTitulo.getText().toString().trim();
         String descripcion = etDescripcion.getText().toString().trim();
-        String ubicacion = etUbicacion.getText().toString().trim();
+        String ubicacion = "Lat: " + latitudSeleccionada + ", Lng: " + longitudSeleccionada;
         String estado = "Pendiente";
         String fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
@@ -126,10 +143,17 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK && data != null) {
-            double lat = data.getDoubleExtra("lat", 0);
-            double lng = data.getDoubleExtra("lng", 0);
-            etUbicacion.setText("Lat: " + lat + ", Lng: " + lng);
+            latitudSeleccionada = data.getDoubleExtra("lat", 0);
+            longitudSeleccionada = data.getDoubleExtra("lng", 0);
+
+            mapView.getMapAsync(googleMap -> {
+                googleMap.clear(); // Limpia anteriores
+                com.google.android.gms.maps.model.LatLng coord = new com.google.android.gms.maps.model.LatLng(latitudSeleccionada, longitudSeleccionada);
+                googleMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions().position(coord).title("Ubicación seleccionada"));
+                googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(coord, 15));
+            });
         }
+
 
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             fotoUri = data.getData();

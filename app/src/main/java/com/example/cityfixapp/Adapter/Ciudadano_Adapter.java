@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.Modelo.Incidencia;
 import com.example.cityfixapp.R;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,15 +115,15 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
 
         TextView tvTitulo = vista.findViewById(R.id.tvDetalleTitulo);
         TextView tvDescripcion = vista.findViewById(R.id.tvDetalleDescripcion);
-        TextView tvUbicacion = vista.findViewById(R.id.tvDetalleUbicacion);
+        MapView mapView = vista.findViewById(R.id.mapaUbicacion);
         TextView tvFecha = vista.findViewById(R.id.tvDetalleFecha);
         TextView tvEstado = vista.findViewById(R.id.tvDetalleEstado);
         Button btnEliminar = vista.findViewById(R.id.btnEliminar);
         ImageView ivFoto = vista.findViewById(R.id.ivDetalleFoto);
 
-        tvTitulo.setText("Título: " + inc.titulo);
-        tvDescripcion.setText("Descripción: " + inc.descripcion);
-        tvUbicacion.setText("Ubicación: " + inc.ubicacion);
+        tvTitulo.setText(inc.titulo);
+        tvDescripcion.setText(inc.descripcion);
+
         tvFecha.setText("Fecha: " + inc.fechaHora);
         tvEstado.setText("Estado: " + inc.estado);
 
@@ -141,6 +143,32 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
             notifyDataSetChanged();
             Toast.makeText(context, "Incidencia eliminada", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
+        });
+
+        mapView.onCreate(null);
+        mapView.onResume(); // NECESARIO para que se muestre
+
+        try {
+            MapsInitializer.initialize(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mapView.getMapAsync(googleMap -> {
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+            // EXTRAER coordenadas desde inc.ubicacion
+            try {
+                String[] partes = inc.ubicacion.replace("Lat: ", "").replace("Lng: ", "").split(", ");
+                double lat = Double.parseDouble(partes[0]);
+                double lng = Double.parseDouble(partes[1]);
+
+                com.google.android.gms.maps.model.LatLng coordenadas = new com.google.android.gms.maps.model.LatLng(lat, lng);
+                googleMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions().position(coordenadas).title("Ubicación de la incidencia"));
+                googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         dialog.show();
