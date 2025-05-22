@@ -7,6 +7,7 @@ public class Incidencia {
     public String ubicacion;
     public String estado;
     public String fechaHora;
+    public int idTecnico; // <- NUEVO: id del técnico asignado
     public byte[] foto; // <- NUEVO: foto como array de bytes
 
     public Incidencia(int id, String titulo, String descripcion, String ubicacion, String estado, String fechaHora, byte[] foto) {

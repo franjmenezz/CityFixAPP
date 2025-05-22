@@ -20,7 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cityfixapp.Adapter.Administrador_Adapter;
+import com.example.cityfixapp.Adapter.AdministradorIncidencias_Adapter;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.Modelo.Incidencia;
 import com.example.cityfixapp.R;
@@ -31,7 +31,7 @@ public class Activity_AdministrarIncidencias extends AppCompatActivity {
 
     private DBConexion dbConexion;
     private RecyclerView recyclerView;
-    private Administrador_Adapter adapter;
+    private AdministradorIncidencias_Adapter adapter;
     private List<Incidencia> listaIncidencias;
 
     @Override
@@ -53,7 +53,7 @@ public class Activity_AdministrarIncidencias extends AppCompatActivity {
         EditText etBuscar = findViewById(R.id.etBuscarAdmin);
 
         listaIncidencias = dbConexion.obtenerTodasLasIncidencias();
-        adapter = new Administrador_Adapter(this, listaIncidencias);
+        adapter = new AdministradorIncidencias_Adapter(this, listaIncidencias);
         recyclerView.setAdapter(adapter);
 
         // Declarar las opciones del Spinner

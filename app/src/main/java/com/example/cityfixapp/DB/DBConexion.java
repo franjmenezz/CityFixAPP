@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.cityfixapp.Modelo.Administrador;
 import com.example.cityfixapp.Modelo.Incidencia;
 
 import java.util.ArrayList;
@@ -75,7 +76,8 @@ public class DBConexion extends SQLiteOpenHelper {
             "foto BLOB, " +
             "fecha_hora TEXT NOT NULL, " +
             "estado TEXT NOT NULL, " +
-            "id_ciudadano INTEGER NOT NULL);";
+            "id_ciudadano INTEGER NOT NULL, " +
+            "id_tecnico INTEGER NULL);";
 
 
     // Sentencia SQL para la creación de la tabla tecnicos
@@ -180,6 +182,103 @@ public class DBConexion extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
+
+    public void asignarTecnicoAIncidencia(int incidenciaId, int tecnicoId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("id_tecnico", tecnicoId);
+        db.update("incidencias", valores, "_id = ?", new String[]{String.valueOf(incidenciaId)});
+    }
+
+    public List<String> obtenerNombresTecnicos() {
+        List<String> lista = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nombre FROM tecnicos ORDER BY nombre", null);
+        while(cursor.moveToNext()) {
+            lista.add(cursor.getString(0));
+        }
+        cursor.close();
+        return lista;
+    }
+
+    public int obtenerIdTecnicoPorNombre(String nombre) {
+        int id = -1;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id FROM tecnicos WHERE nombre = ?", new String[]{nombre});
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        return id;
+    }
+
+    public int obtenerIdTecnicoAsignado(int incidenciaId) {
+        int tecnicoId = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_tecnico FROM incidencias WHERE _id = ?", new String[]{String.valueOf(incidenciaId)});
+        if (cursor.moveToFirst()) {
+            tecnicoId = cursor.isNull(0) ? -1 : cursor.getInt(0);
+        }
+        cursor.close();
+        return tecnicoId;
+    }
+
+    public List<String> obtenerUsuariosAdministradores() {
+        List<String> lista = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT admin_usuario FROM administrador ORDER BY admin_usuario", null);
+        while (cursor.moveToNext()) {
+            lista.add(cursor.getString(0));
+        }
+        cursor.close();
+        return lista;
+    }
+
+    public boolean insertarAdministrador(String usuario, String password) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues valores = new ContentValues();
+            valores.put("admin_usuario", usuario);
+            valores.put("admin_password", DB_Encriptacion.encrypt(password));
+            long id = db.insert("administrador", null, valores);
+            return id != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    // Método para obtener lista de usuarios administradores
+    public List<String> obtenerUsuariosAdministrador() {
+        List<String> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT admin_usuario FROM administrador ORDER BY admin_usuario", null);
+        while (cursor.moveToNext()) {
+            lista.add(cursor.getString(0));
+        }
+        cursor.close();
+        return lista;
+    }
+
+    // Método para modificar un administrador
+    public boolean modificarAdministrador(String usuarioActual, String nuevoUsuario, String nuevaPassword) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues valores = new ContentValues();
+            valores.put("admin_usuario", nuevoUsuario);
+            valores.put("admin_password", DB_Encriptacion.encrypt(nuevaPassword));
+            int filas = db.update("administrador", valores, "admin_usuario = ?", new String[]{usuarioActual});
+            return filas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
 
 
 
