@@ -8,10 +8,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -21,6 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cityfixapp.Adapter.ListasAdapter;
 import com.example.cityfixapp.Adapter.MenuAdministradorAdapter;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
@@ -97,23 +100,23 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
     }
 
     @Override public void mostrarAdministradores() {
-        // Por implementar
+        mostrarDialogoMostrarAdministradores();
     }
 
     @Override public void nuevoTecnico() {
-        // Por implementar
+        mostrarDialogoNuevoTecnico();
     }
 
     @Override public void modificarTecnico() {
-        // Por implementar
+        mostrarDialogoModificarTecnico();
     }
 
     @Override public void mostrarTecnicos() {
-        // Por implementar
+        mostrarDialogoMostrarTecnicos();
     }
 
     @Override public void modificarCiudadano() {
-        // Por implementar
+
     }
 
     @Override public void mostrarCiudadanos() {
@@ -172,7 +175,8 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
 
         // Cargar administradores en el spinner
         DBConexion dbConexion = new DBConexion(this);
-        List<String> admins = dbConexion.obtenerUsuariosAdministrador();
+        List<String> admins = dbConexion.obtenerUsuariosAdministradores();
+
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, admins);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAdministradores.setAdapter(adapterSpinner);
@@ -211,6 +215,254 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
 
         dialog.show();
     }
+
+    private void mostrarDialogoMostrarAdministradores() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Administradores registrados");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_administradores, null);
+        TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadAdmins);
+        RecyclerView rvAdministradores = viewInflated.findViewById(R.id.rvAdministradores);
+
+        DBConexion dbConexion = new DBConexion(this);
+        List<String> administradores = dbConexion.obtenerUsuariosAdministradores();
+
+        // Mostrar cantidad total de administradores
+        tvCantidad.setText("Existen " + administradores.size() + " usuarios administradores");
+
+        // Configurar RecyclerView
+        rvAdministradores.setLayoutManager(new LinearLayoutManager(this));
+        // Adaptador simple para mostrar lista de strings
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, administradores);
+
+        // RecyclerView no usa ArrayAdapter, sino RecyclerView.Adapter, así que necesitamos uno simple:
+        rvAdministradores.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+                return new RecyclerView.ViewHolder(itemView) {};
+            }
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+                TextView tv = (TextView) holder.itemView;
+                tv.setText(administradores.get(position));
+            }
+            @Override
+            public int getItemCount() {
+                return administradores.size();
+            }
+        });
+
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
+    }
+    private void mostrarDialogoNuevoTecnico() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Nuevo Técnico");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_nuevo_tecnico, null);
+        final EditText inputNombre = viewInflated.findViewById(R.id.etNombre);
+        final EditText inputSector = viewInflated.findViewById(R.id.etSector);
+        final EditText inputUsuario = viewInflated.findViewById(R.id.etUsuario);
+        final EditText inputPassword = viewInflated.findViewById(R.id.etPassword);
+
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton("Guardar", (dialog, which) -> {
+            String nombre = inputNombre.getText().toString().trim();
+            String sector = inputSector.getText().toString().trim();
+            String usuario = inputUsuario.getText().toString().trim();
+            String password = inputPassword.getText().toString().trim();
+
+            if (nombre.isEmpty() || sector.isEmpty() || usuario.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            DBConexion dbConexion = new DBConexion(this);
+            boolean exito = dbConexion.insertarTecnico(nombre, sector, usuario, password);
+
+            if (exito) {
+                Toast.makeText(this, "Técnico creado correctamente", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(this, "Error al crear técnico", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
+    private void mostrarDialogoModificarTecnico() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Modificar Técnico");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_modificar_tecnico, null);
+
+        Spinner spinnerTecnicos = viewInflated.findViewById(R.id.spinnerTecnicos);
+        EditText etNuevoNombre = viewInflated.findViewById(R.id.etNuevoNombre);
+        EditText etNuevoSector = viewInflated.findViewById(R.id.etNuevoSector);
+        EditText etNuevoUsuario = viewInflated.findViewById(R.id.etNuevoUsuario);
+        EditText etNuevaPassword = viewInflated.findViewById(R.id.etNuevaPassword);
+        Button btnGuardar = viewInflated.findViewById(R.id.btnGuardar);
+        Button btnCancelar = viewInflated.findViewById(R.id.btnCancelar);
+
+        DBConexion dbConexion = new DBConexion(this);
+        List<String> tecnicos = dbConexion.obtenerUsuariosTecnicos();
+
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tecnicos);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTecnicos.setAdapter(adapterSpinner);
+
+        AlertDialog dialog = builder.setView(viewInflated).create();
+
+        btnGuardar.setOnClickListener(v -> {
+            String tecnicoActual = (String) spinnerTecnicos.getSelectedItem();
+            String nuevoNombre = etNuevoNombre.getText().toString().trim();
+            String nuevoSector = etNuevoSector.getText().toString().trim();
+            String nuevoUsuario = etNuevoUsuario.getText().toString().trim();
+            String nuevaPassword = etNuevaPassword.getText().toString().trim();
+
+            if (tecnicoActual == null) {
+                Toast.makeText(this, "Selecciona un técnico para modificar", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (nuevaPassword.isEmpty()) {
+                Toast.makeText(this, "La contraseña es obligatoria", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            boolean exito = dbConexion.modificarTecnico(
+                    tecnicoActual,
+                    nuevoNombre.isEmpty() ? null : nuevoNombre,
+                    nuevoSector.isEmpty() ? null : nuevoSector,
+                    nuevoUsuario.isEmpty() ? null : nuevoUsuario,
+                    nuevaPassword
+            );
+
+            if (exito) {
+                Toast.makeText(this, "Técnico modificado correctamente", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(this, "Error al modificar técnico", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void mostrarDialogoMostrarTecnicos() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Técnicos registrados");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_tecnicos, null);
+        TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadTecnicos);
+        RecyclerView rvTecnicos = viewInflated.findViewById(R.id.rvTecnicos);
+
+        DBConexion dbConexion = new DBConexion(this);
+        List<String> tecnicos = dbConexion.obtenerUsuariosTecnicos();
+
+        tvCantidad.setText("Existen " + tecnicos.size() + " técnicos registrados");
+
+        rvTecnicos.setLayoutManager(new LinearLayoutManager(this));
+        rvTecnicos.setAdapter(new ListasAdapter(tecnicos));
+
+        builder.setView(viewInflated);
+        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void mostrarDialogoMostrarCiudadanos() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ciudadanos registrados");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_ciudadanos, null);
+        TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadCiudadanos);
+        RecyclerView rvCiudadanos = viewInflated.findViewById(R.id.rvCiudadanos);
+
+        DBConexion dbConexion = new DBConexion(this);
+        List<String> ciudadanos = dbConexion.obtenerUsuariosCiudadanos();
+
+        tvCantidad.setText("Existen " + ciudadanos.size() + " ciudadanos registrados");
+
+        rvCiudadanos.setLayoutManager(new LinearLayoutManager(this));
+        rvCiudadanos.setAdapter(new ListasAdapter(ciudadanos));
+
+        builder.setView(viewInflated);
+        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    /*
+    private void mostrarDialogoModificarCiudadano() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Modificar Ciudadano");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_modificar_ciudadano, null);
+
+        Spinner spinnerCiudadanos = viewInflated.findViewById(R.id.spinnerCiudadanos);
+        EditText etNuevoNombre = viewInflated.findViewById(R.id.etNuevoNombre);
+        EditText etNuevoEmail = viewInflated.findViewById(R.id.etNuevoEmail);
+        EditText etNuevoTelefono = viewInflated.findViewById(R.id.etNuevoTelefono);
+        EditText etNuevoUsuario = viewInflated.findViewById(R.id.etNuevoUsuario);
+        EditText etNuevaPassword = viewInflated.findViewById(R.id.etNuevaPassword);
+        Button btnGuardar = viewInflated.findViewById(R.id.btnGuardar);
+        Button btnCancelar = viewInflated.findViewById(R.id.btnCancelar);
+
+        DBConexion dbConexion = new DBConexion(this);
+        List<String> ciudadanos = dbConexion.obtenerUsuariosCiudadanos();
+
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ciudadanos);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCiudadanos.setAdapter(adapterSpinner);
+
+        AlertDialog dialog = builder.setView(viewInflated).create();
+
+        btnGuardar.setOnClickListener(v -> {
+            String ciudadanoActual = (String) spinnerCiudadanos.getSelectedItem();
+            String nuevoNombre = etNuevoNombre.getText().toString().trim();
+            String nuevoEmail = etNuevoEmail.getText().toString().trim();
+            String nuevoTelefono = etNuevoTelefono.getText().toString().trim();
+            String nuevoUsuario = etNuevoUsuario.getText().toString().trim();
+            String nuevaPassword = etNuevaPassword.getText().toString().trim();
+
+            if (ciudadanoActual == null) {
+                Toast.makeText(this, "Selecciona un ciudadano para modificar", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (nuevaPassword.isEmpty()) {
+                Toast.makeText(this, "La contraseña es obligatoria", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            boolean exito = dbConexion.modificarCiudadano(
+                    ciudadanoActual,
+                    nuevoNombre.isEmpty() ? ciudadanoActual : nuevoNombre,
+                    nuevoEmail.isEmpty() ? "" : nuevoEmail,
+                    nuevoTelefono.isEmpty() ? "" : nuevoTelefono,
+                    nuevoUsuario.isEmpty() ? ciudadanoActual : nuevoUsuario,
+                    nuevaPassword
+            );
+
+            if (exito) {
+                Toast.makeText(this, "Ciudadano modificado correctamente", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(this, "Error al modificar ciudadano", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }*/
 
 
 

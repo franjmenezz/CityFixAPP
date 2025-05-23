@@ -223,16 +223,6 @@ public class DBConexion extends SQLiteOpenHelper {
         return tecnicoId;
     }
 
-    public List<String> obtenerUsuariosAdministradores() {
-        List<String> lista = new ArrayList<>();
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT admin_usuario FROM administrador ORDER BY admin_usuario", null);
-        while (cursor.moveToNext()) {
-            lista.add(cursor.getString(0));
-        }
-        cursor.close();
-        return lista;
-    }
 
     public boolean insertarAdministrador(String usuario, String password) {
         try {
@@ -250,10 +240,10 @@ public class DBConexion extends SQLiteOpenHelper {
 
 
     // Método para obtener lista de usuarios administradores
-    public List<String> obtenerUsuariosAdministrador() {
+    public List<String> obtenerUsuariosAdministradores() {
         List<String> lista = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT admin_usuario FROM administrador ORDER BY admin_usuario", null);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT admin_usuario FROM administrador ORDER BY admin_usuario", null);
         while (cursor.moveToNext()) {
             lista.add(cursor.getString(0));
         }
@@ -261,21 +251,117 @@ public class DBConexion extends SQLiteOpenHelper {
         return lista;
     }
 
+
+
     // Método para modificar un administrador
-    public boolean modificarAdministrador(String usuarioActual, String nuevoUsuario, String nuevaPassword) {
+    public boolean modificarAdministrador(String usuarioOriginal, String nuevoUsuario, String nuevaPassword) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues valores = new ContentValues();
+
+        if (!nuevoUsuario.isEmpty()) {
+            valores.put(ADMIN_USUARIO, nuevoUsuario);
+        }
+        if (!nuevaPassword.isEmpty()) {
+            try {
+                valores.put(ADMIN_PASSWORD, DB_Encriptacion.encrypt(nuevaPassword));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        if (valores.size() == 0) return false; // No hay cambios
+
+        int rows = db.update(TABLA_ADMINISTRADOR, valores, ADMIN_USUARIO + " = ?", new String[]{usuarioOriginal});
+        return rows > 0;
+    }
+
+
+    // Inserta un técnico nuevo
+    public boolean insertarTecnico(String nombre, String sector, String usuario, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("nombre", nombre);
+        valores.put("sector", sector);
+        valores.put("usuario", usuario);
         try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues valores = new ContentValues();
-            valores.put("admin_usuario", nuevoUsuario);
-            valores.put("admin_password", DB_Encriptacion.encrypt(nuevaPassword));
-            int filas = db.update("administrador", valores, "admin_usuario = ?", new String[]{usuarioActual});
-            return filas > 0;
+            valores.put("password", DB_Encriptacion.encrypt(password));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // si hay error al encriptar, no insertar
+        }
+        valores.put("clave", "defaultClave"); // o valor válido
+        long resultado = db.insert("tecnicos", null, valores);
+        return resultado != -1;
+    }
+
+
+
+    // Modifica un técnico existente (buscando por usuario actual)
+    public boolean modificarTecnico(String usuarioActual, String nuevoNombre, String nuevoSector, String nuevoUsuario, String nuevaPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        if (nuevoNombre != null) valores.put("nombre", nuevoNombre);
+        if (nuevoSector != null) valores.put("sector", nuevoSector);
+        if (nuevoUsuario != null) valores.put("usuario", nuevoUsuario);
+        try {
+            valores.put("password", DB_Encriptacion.encrypt(nuevaPassword));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        int filas = db.update(TABLA_TECNICOS, valores, "usuario = ?", new String[]{usuarioActual});
+        return filas > 0;
     }
 
+    // Obtiene una lista de nombres de usuarios técnicos (para spinners o listados)
+    public List<String> obtenerUsuariosTecnicos() {
+        List<String> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT usuario FROM tecnicos ORDER BY usuario", null);
+        while(cursor.moveToNext()) {
+            lista.add(cursor.getString(0));
+        }
+        cursor.close();
+        return lista;
+    }
+
+
+
+
+    // Obtener lista de usuarios ciudadanos (solo nombres o usuarios)
+    public List<String> obtenerUsuariosCiudadanos() {
+        List<String> lista = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT usuario FROM ciudadano ORDER BY usuario", null);
+        while (cursor.moveToNext()) {
+            lista.add(cursor.getString(0));
+        }
+        cursor.close();
+        return lista;
+    }
+
+    // Modificar ciudadano
+    public boolean modificarCiudadano(String usuarioActual, String nuevoNombre, String nuevoEmail, String nuevaPassword, String nuevoTelefono, String nuevoUsuario, String nuevoDni) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+
+        if (!nuevoNombre.isEmpty()) valores.put("nombre", nuevoNombre);
+        if (!nuevoEmail.isEmpty()) valores.put("email", nuevoEmail);
+        if (!nuevaPassword.isEmpty()) {
+            try {
+                valores.put("password", DB_Encriptacion.encrypt(nuevaPassword));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        if (!nuevoTelefono.isEmpty()) valores.put("telefono", nuevoTelefono);
+        if (!nuevoUsuario.isEmpty()) valores.put("usuario", nuevoUsuario);
+        if (!nuevoDni.isEmpty()) valores.put("dni", nuevoDni);
+
+        int filas = db.update("ciudadano", valores, "usuario = ?", new String[]{usuarioActual});
+        return filas > 0;
+    }
 
 
 
