@@ -116,11 +116,11 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
     }
 
     @Override public void modificarCiudadano() {
-
+        mostrarDialogoModificarCiudadano();
     }
 
     @Override public void mostrarCiudadanos() {
-        // Por implementar
+        mostrarDialogoMostrarCiudadanos();
     }
 
     private void mostrarDialogoNuevoAdministrador() {
@@ -400,7 +400,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
         builder.show();
     }
 
-    /*
+
     private void mostrarDialogoModificarCiudadano() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Modificar Ciudadano");
@@ -413,6 +413,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
         EditText etNuevoTelefono = viewInflated.findViewById(R.id.etNuevoTelefono);
         EditText etNuevoUsuario = viewInflated.findViewById(R.id.etNuevoUsuario);
         EditText etNuevaPassword = viewInflated.findViewById(R.id.etNuevaPassword);
+        EditText etNuevoDni = viewInflated.findViewById(R.id.etNuevoDNI);
         Button btnGuardar = viewInflated.findViewById(R.id.btnGuardar);
         Button btnCancelar = viewInflated.findViewById(R.id.btnCancelar);
 
@@ -432,6 +433,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
             String nuevoTelefono = etNuevoTelefono.getText().toString().trim();
             String nuevoUsuario = etNuevoUsuario.getText().toString().trim();
             String nuevaPassword = etNuevaPassword.getText().toString().trim();
+            String nuevoDni = etNuevoDni.getText().toString().trim();
 
             if (ciudadanoActual == null) {
                 Toast.makeText(this, "Selecciona un ciudadano para modificar", Toast.LENGTH_SHORT).show();
@@ -446,9 +448,10 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
                     ciudadanoActual,
                     nuevoNombre.isEmpty() ? ciudadanoActual : nuevoNombre,
                     nuevoEmail.isEmpty() ? "" : nuevoEmail,
+                    nuevaPassword.isEmpty() ? "" : nuevaPassword,
                     nuevoTelefono.isEmpty() ? "" : nuevoTelefono,
                     nuevoUsuario.isEmpty() ? ciudadanoActual : nuevoUsuario,
-                    nuevaPassword
+                    nuevoDni.isEmpty() ? "" : nuevoDni
             );
 
             if (exito) {
@@ -462,8 +465,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
         btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
-    }*/
-
+    }
 
 
 }
