@@ -2,6 +2,8 @@ package com.example.cityfixapp.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import android.widget.Toast;
@@ -66,8 +69,10 @@ public class TecnicoIncidenciasAdapter extends RecyclerView.Adapter<TecnicoIncid
                 break;
         }
 
-        holder.btnVerDetalles.setOnClickListener(v -> mostrarDialogoDetalles(inc));
+        // ✅ PASAR POSICIÓN AQUÍ
+        holder.btnVerDetalles.setOnClickListener(v -> mostrarDialogoDetalles(inc, position));
     }
+
 
     @Override
     public int getItemCount() {
@@ -87,35 +92,36 @@ public class TecnicoIncidenciasAdapter extends RecyclerView.Adapter<TecnicoIncid
         }
     }
 
-    private void mostrarDialogoDetalles(Incidencia inc) {
+    private void mostrarDialogoDetalles(Incidencia inc, int position) {
         View vista = LayoutInflater.from(context).inflate(R.layout.dialog_detalle_incidencia_tecnico, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(vista);
         AlertDialog dialog = builder.create();
 
+        MapView mapView = vista.findViewById(R.id.mapaUbicacion);
+        ImageView ivFoto = vista.findViewById(R.id.ivDetalleFoto);
         TextView tvTitulo = vista.findViewById(R.id.tvDetalleTitulo);
         TextView tvDescripcion = vista.findViewById(R.id.tvDetalleDescripcion);
+        TextView tvFecha = vista.findViewById(R.id.tvDetalleFecha);
         TextView tvEstado = vista.findViewById(R.id.tvDetalleEstado);
         Button btnCambiarEstado = vista.findViewById(R.id.btnCambiarEstado);
 
         tvTitulo.setText(inc.titulo);
         tvDescripcion.setText(inc.descripcion);
+        tvFecha.setText("Fecha: " + inc.fechaHora);
         tvEstado.setText("Estado: " + inc.estado);
 
-        // Colorear el estado según su valor
-        switch (inc.estado.toLowerCase()) {
-            case "completada":
-                tvEstado.setTextColor(Color.parseColor("#4CAF50")); // verde
-                break;
-            case "pendiente":
-                tvEstado.setTextColor(Color.parseColor("#FFC107")); // amarillo
-                break;
-            case "denegada":
-                tvEstado.setTextColor(Color.parseColor("#F44336")); // rojo
-                break;
-            default:
-                tvEstado.setTextColor(Color.BLACK);
-                break;
+        // Colorear el estado
+        colorearEstado(tvEstado, inc.estado);
+
+        byte[] fotoBytes = cargarFotoDesdeBD(inc.id);
+        if (fotoBytes != null && fotoBytes.length > 0) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(fotoBytes, 0, fotoBytes.length);
+            ivFoto.setImageBitmap(bitmap);
+        } else {
+            ivFoto.setImageResource(R.drawable.baseline_no_photography_24);
         }
+
+
 
         btnCambiarEstado.setOnClickListener(v -> {
             final String[] estados = {"Pendiente", "Completada", "Denegada"};
@@ -127,22 +133,11 @@ public class TecnicoIncidenciasAdapter extends RecyclerView.Adapter<TecnicoIncid
                 if (exito) {
                     inc.estado = nuevoEstado;
                     tvEstado.setText("Estado: " + nuevoEstado);
-                    // Actualizar color
-                    switch (nuevoEstado.toLowerCase()) {
-                        case "completada":
-                            tvEstado.setTextColor(Color.parseColor("#4CAF50"));
-                            break;
-                        case "pendiente":
-                            tvEstado.setTextColor(Color.parseColor("#FFC107"));
-                            break;
-                        case "denegada":
-                            tvEstado.setTextColor(Color.parseColor("#F44336"));
-                            break;
-                        default:
-                            tvEstado.setTextColor(Color.BLACK);
-                            break;
-                    }
+                    colorearEstado(tvEstado, nuevoEstado);
                     Toast.makeText(context, "Estado actualizado a " + nuevoEstado, Toast.LENGTH_SHORT).show();
+
+                    // 🔄 REFRESCAR el ítem del RecyclerView
+                    notifyItemChanged(position);
                 } else {
                     Toast.makeText(context, "Error al actualizar estado", Toast.LENGTH_SHORT).show();
                 }
@@ -150,6 +145,77 @@ public class TecnicoIncidenciasAdapter extends RecyclerView.Adapter<TecnicoIncid
             estadoDialog.show();
         });
 
+        mapView.onCreate(null);
+        mapView.onResume(); // NECESARIO para que se muestre
+
+        try {
+            MapsInitializer.initialize(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mapView.getMapAsync(googleMap -> {
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+            // EXTRAER coordenadas desde inc.ubicacion
+            try {
+                String[] partes = inc.ubicacion.replace("Lat: ", "").replace("Lng: ", "").split(", ");
+                double lat = Double.parseDouble(partes[0]);
+                double lng = Double.parseDouble(partes[1]);
+
+                com.google.android.gms.maps.model.LatLng coordenadas = new com.google.android.gms.maps.model.LatLng(lat, lng);
+                googleMap.addMarker(new com.google.android.gms.maps.model.MarkerOptions().position(coordenadas).title("Ubicación de la incidencia"));
+                googleMap.moveCamera(com.google.android.gms.maps.CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+
+
         dialog.show();
     }
+
+    private void colorearEstado(TextView tv, String estado) {
+        switch (estado.toLowerCase()) {
+            case "completada":
+                tv.setTextColor(Color.parseColor("#4CAF50")); // verde
+                break;
+            case "pendiente":
+                tv.setTextColor(Color.parseColor("#FFC107")); // amarillo
+                break;
+            case "denegada":
+                tv.setTextColor(Color.parseColor("#F44336")); // rojo
+                break;
+            default:
+                tv.setTextColor(Color.BLACK);
+                break;
+        }
+    }
+
+    private byte[] cargarFotoDesdeBD(int id) {
+        SQLiteDatabase db = dbConexion.getReadableDatabase();
+        byte[] foto = null;
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT foto FROM incidencias WHERE _id = ? LIMIT 1",
+                    new String[]{String.valueOf(id)}
+            );
+
+            if (cursor.moveToFirst()) {
+                // Extrae en fragmentos si es posible
+                foto = cursor.getBlob(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+
+        return foto;
+    }
+
+
 }

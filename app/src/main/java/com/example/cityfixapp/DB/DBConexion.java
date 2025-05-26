@@ -390,13 +390,14 @@ public class DBConexion extends SQLiteOpenHelper {
     }
 
 
-    public boolean actualizarEstadoIncidencia(int incidenciaId, String nuevoEstado) {
-        SQLiteDatabase db = getWritableDatabase();
+    public boolean actualizarEstadoIncidencia(int idIncidencia, String nuevoEstado) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues valores = new ContentValues();
         valores.put("estado", nuevoEstado);
-        int filas = db.update("incidencias", valores, "_id = ?", new String[]{String.valueOf(incidenciaId)});
-        return filas > 0;
+        int filasAfectadas = db.update("incidencias", valores, "_id = ?", new String[]{String.valueOf(idIncidencia)});
+        return filasAfectadas > 0;
     }
+
 
 
 

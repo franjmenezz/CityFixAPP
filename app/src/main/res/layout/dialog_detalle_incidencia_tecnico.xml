@@ -21,6 +21,11 @@
         android:text="Descripción"
         android:layout_marginBottom="12dp" />
 
+    <TextView android:id="@+id/tvDetalleFecha"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/tvDetalleEstado"
         android:layout_width="match_parent"
@@ -29,6 +34,20 @@
         android:layout_marginBottom="24dp"
         android:textColor="@android:color/holo_blue_dark"
         android:textStyle="italic" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapaUbicacion"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp" />
+
+    <ImageView
+        android:id="@+id/ivDetalleFoto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="Foto de la incidencia" />
 
     <Button
         android:id="@+id/btnCambiarEstado"
