@@ -364,6 +364,39 @@ public class DBConexion extends SQLiteOpenHelper {
     }
 
 
+    public List<Incidencia> obtenerIncidenciasPorTecnico(int tecnicoId) {
+        List<Incidencia> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT _id, titulo, descripcion, ubicacion, estado, fecha_hora, foto FROM incidencias WHERE id_tecnico = ? ORDER BY _id DESC",
+                new String[]{String.valueOf(tecnicoId)}
+        );
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String titulo = cursor.getString(1);
+            String descripcion = cursor.getString(2);
+            String ubicacion = cursor.getString(3);
+            String estado = cursor.getString(4);
+            String fechaHora = cursor.getString(5);
+            byte[] foto = cursor.getBlob(6);
+
+            lista.add(new Incidencia(id, titulo, descripcion, ubicacion, estado, fechaHora, foto));
+        }
+
+        cursor.close();
+        return lista;
+    }
+
+
+    public boolean actualizarEstadoIncidencia(int incidenciaId, String nuevoEstado) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("estado", nuevoEstado);
+        int filas = db.update("incidencias", valores, "_id = ?", new String[]{String.valueOf(incidenciaId)});
+        return filas > 0;
+    }
 
 
 

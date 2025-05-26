@@ -55,7 +55,7 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
         holder.tvTitulo.setText(inc.titulo);
         holder.tvEstado.setText("Estado: " + inc.estado);
         holder.tvFecha.setText("Fecha: " + inc.fechaHora);
-
+        holder.tvTecnico.setVisibility(View.GONE);
         // Colorear el estado
         switch (inc.estado.toLowerCase()) {
             case "completada":
@@ -81,7 +81,7 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitulo, tvEstado, tvFecha;
+        TextView tvTitulo, tvEstado, tvFecha, tvTecnico;
         Button btnVerDetalles;
 
         public ViewHolder(@NonNull View itemView) {
@@ -89,6 +89,7 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
             tvTitulo = itemView.findViewById(R.id.tvTitulo);
             tvEstado = itemView.findViewById(R.id.tvEstado);
             tvFecha = itemView.findViewById(R.id.tvFecha);
+            tvTecnico = itemView.findViewById(R.id.tvTecnico);
             btnVerDetalles = itemView.findViewById(R.id.btnVerDetalles);
         }
     }

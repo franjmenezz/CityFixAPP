@@ -40,6 +40,7 @@
         <activity android:name=".Activity.Activity_CrearIncidencia"/>
         <activity android:name=".Activity.Activity_SeleccionarUbicacion"/>
         <activity android:name=".Activity.Activity_AdministrarIncidencias"/>
+        <activity android:name=".Activity.ActivityTecnico"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

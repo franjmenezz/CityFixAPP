@@ -34,6 +34,8 @@ import java.util.List;
 
 public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<AdministradorIncidencias_Adapter.ViewHolder> {
     private final Context context;
+
+
     private List<Incidencia> listaOriginal;
     private List<Incidencia> listaFiltrada;
     private DBConexion dbConexion;
@@ -193,9 +195,15 @@ public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<Admin
         });
 
         btnAsignarTecnico.setOnClickListener(v -> {
-            // Abre un nuevo diálogo para seleccionar técnico
-            mostrarDialogoSeleccionarTecnico(inc, dialog);
+            mostrarDialogoSeleccionarTecnico(inc, dialog, () -> {
+                listaOriginal.clear();
+                listaOriginal.addAll(dbConexion.obtenerTodasLasIncidencias());
+                listaFiltrada.clear();
+                listaFiltrada.addAll(listaOriginal);
+                notifyDataSetChanged();
+            });
         });
+
 
         mapView.onCreate(null);
         mapView.onResume(); // NECESARIO para que se muestre
@@ -258,28 +266,29 @@ public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<Admin
         return foto;
     }
 
-    private void mostrarDialogoSeleccionarTecnico(Incidencia inc, AlertDialog dialogDetalles) {
-        // Supongamos que tienes una lista de técnicos disponibles:
-        List<String> nombresTecnicos = dbConexion.obtenerNombresTecnicos(); // Método que debes crear en DBConexion para obtener nombres
+    private void mostrarDialogoSeleccionarTecnico(Incidencia inc, AlertDialog dialogDetalles, Runnable onTecnicoAsignado) {
+        List<String> nombresTecnicos = dbConexion.obtenerNombresTecnicos();
         final String[] tecnicosArray = nombresTecnicos.toArray(new String[0]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Selecciona un técnico");
         builder.setSingleChoiceItems(tecnicosArray, -1, (dialog, which) -> {
-            // Al seleccionar un técnico, asignar y cerrar diálogos
-            int tecnicoId = dbConexion.obtenerIdTecnicoPorNombre(tecnicosArray[which]); // Otro método que debes implementar
+            int tecnicoId = dbConexion.obtenerIdTecnicoPorNombre(tecnicosArray[which]);
             dbConexion.asignarTecnicoAIncidencia(inc.id, tecnicoId);
 
             Toast.makeText(context, "Técnico asignado correctamente", Toast.LENGTH_SHORT).show();
 
             dialog.dismiss();
-            dialogDetalles.dismiss(); // Cierra el diálogo de detalles también
+            dialogDetalles.dismiss();
 
-            // Opcional: refrescar lista o avisar cambios con un callback
+            if (onTecnicoAsignado != null) {
+                onTecnicoAsignado.run();
+            }
         });
         builder.setNegativeButton("Cancelar", null);
         builder.show();
     }
+
 
 
 }
