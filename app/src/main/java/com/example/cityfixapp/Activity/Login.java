@@ -46,7 +46,7 @@ public class Login extends AppCompatActivity {
                     int idCiudadano = dbConexion.obtenerIdCiudadano(inputUsername);
 
                     if (idCiudadano != -1) {
-                        Intent intent = new Intent(Login.this, Activity_Ciudadano.class);
+                        Intent intent = new Intent(Login.this, ActivityCiudadano.class);
                         intent.putExtra("id_ciudadano", idCiudadano);
                         startActivity(intent);
                         finish();

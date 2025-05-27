@@ -27,7 +27,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.ViewHolder> {
+public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.ViewHolder> {
 
     private List<Incidencia> listaOriginal;
     private List<Incidencia> listaFiltrada;
@@ -35,7 +35,7 @@ public class Ciudadano_Adapter extends RecyclerView.Adapter<Ciudadano_Adapter.Vi
     private Context context;
     private DBConexion dbConexion;
 
-    public Ciudadano_Adapter(Context context, List<Incidencia> lista) {
+    public CiudadanoAdapter(Context context, List<Incidencia> lista) {
         this.context = context;
         this.dbConexion = new DBConexion(context);
         this.listaOriginal = lista;

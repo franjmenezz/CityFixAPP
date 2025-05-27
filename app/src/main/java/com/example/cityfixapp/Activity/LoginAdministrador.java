@@ -37,7 +37,7 @@ public class LoginAdministrador extends AppCompatActivity {
                 DBConexion dbConexion = new DBConexion(LoginAdministrador.this);
                 if (dbConexion.verificarCredenciales("administrador", "admin_usuario", "admin_password", inputUsername, inputPassword)) {
                     Toast.makeText(LoginAdministrador.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginAdministrador.this, Activity_Administrador.class);
+                    Intent intent = new Intent(LoginAdministrador.this, ActivityAdministrador.class);
                     startActivity(intent);
                     finish();
                 } else {

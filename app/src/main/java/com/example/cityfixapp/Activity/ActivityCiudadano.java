@@ -1,6 +1,5 @@
 package com.example.cityfixapp.Activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +9,6 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,7 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cityfixapp.Adapter.Ciudadano_Adapter;
+import com.example.cityfixapp.Adapter.CiudadanoAdapter;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.Modelo.Incidencia;
 import com.example.cityfixapp.R;
@@ -29,10 +27,10 @@ import com.example.cityfixapp.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activity_Ciudadano extends AppCompatActivity {
+public class ActivityCiudadano extends AppCompatActivity {
 
     private RecyclerView rvMisIncidencias;
-    private Ciudadano_Adapter adapter;
+    private CiudadanoAdapter adapter;
     private DBConexion dbConexion;
     private int idCiudadano;
 
@@ -67,7 +65,7 @@ public class Activity_Ciudadano extends AppCompatActivity {
 
         Button btnNuevaIncidencia = findViewById(R.id.btnNuevaIncidencia);
         btnNuevaIncidencia.setOnClickListener(v -> {
-            Intent intent = new Intent(Activity_Ciudadano.this, Activity_CrearIncidencia.class);
+            Intent intent = new Intent(ActivityCiudadano.this, ActivityCrearIncidencia.class);
             intent.putExtra("id_ciudadano", idCiudadano);
             startActivity(intent);
         });
@@ -81,7 +79,7 @@ public class Activity_Ciudadano extends AppCompatActivity {
 
     private void refrescarRecyclerView() {
         List<Incidencia> listaActualizada = cargarIncidencias(idCiudadano);
-        adapter = new Ciudadano_Adapter(this, listaActualizada);
+        adapter = new CiudadanoAdapter(this, listaActualizada);
         rvMisIncidencias.setAdapter(adapter);
         rvMisIncidencias.scrollToPosition(0);
     }
@@ -137,7 +135,7 @@ public class Activity_Ciudadano extends AppCompatActivity {
                 .setTitle("Cerrando Sesión")
                 .setMessage("¿Estás seguro de que deseas cerrar sesión?")
                 .setPositiveButton("Sí", (dialog, which) -> {
-                    startActivity(new Intent(Activity_Ciudadano.this, Login.class));
+                    startActivity(new Intent(ActivityCiudadano.this, Login.class));
                     finish();
                 })
                 .setNegativeButton("No", null)

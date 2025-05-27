@@ -13,7 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Activity_SeleccionarUbicacion extends FragmentActivity implements OnMapReadyCallback {
+public class ActivitySeleccionarUbicacion extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private LatLng ubicacionSeleccionada;
 

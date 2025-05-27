@@ -20,18 +20,18 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cityfixapp.Adapter.AdministradorIncidencias_Adapter;
+import com.example.cityfixapp.Adapter.AdministradorIncidenciasAdapter;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.Modelo.Incidencia;
 import com.example.cityfixapp.R;
 
 import java.util.List;
 
-public class Activity_AdministrarIncidencias extends AppCompatActivity {
+public class ActivityAdministrarIncidencias extends AppCompatActivity {
 
     private DBConexion dbConexion;
     private RecyclerView recyclerView;
-    private AdministradorIncidencias_Adapter adapter;
+    private AdministradorIncidenciasAdapter adapter;
     private List<Incidencia> listaIncidencias;
 
     @Override
@@ -53,7 +53,7 @@ public class Activity_AdministrarIncidencias extends AppCompatActivity {
         EditText etBuscar = findViewById(R.id.etBuscarAdmin);
 
         listaIncidencias = dbConexion.obtenerTodasLasIncidencias();
-        adapter = new AdministradorIncidencias_Adapter(this, listaIncidencias);
+        adapter = new AdministradorIncidenciasAdapter(this, listaIncidencias);
         recyclerView.setAdapter(adapter);
 
         // Declarar las opciones del Spinner
@@ -117,7 +117,7 @@ public class Activity_AdministrarIncidencias extends AppCompatActivity {
                 .setTitle("Cerrando Sesión")
                 .setMessage("¿Estás seguro de que deseas cerrar sesión?")
                 .setPositiveButton("Sí", (dialog, which) -> {
-                    startActivity(new Intent(Activity_AdministrarIncidencias.this, Login.class));
+                    startActivity(new Intent(ActivityAdministrarIncidencias.this, Login.class));
                     finish();
                 })
                 .setNegativeButton("No", null)

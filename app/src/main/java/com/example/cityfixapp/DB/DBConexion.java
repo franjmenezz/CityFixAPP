@@ -9,7 +9,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.cityfixapp.Modelo.Administrador;
 import com.example.cityfixapp.Modelo.Incidencia;
 
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ public class DBConexion extends SQLiteOpenHelper {
         ContentValues valores = new ContentValues();
         try {
             valores.put(ADMIN_USUARIO, "admin");
-            valores.put(ADMIN_PASSWORD, DB_Encriptacion.encrypt("1234")); // Ahora cifrado
+            valores.put(ADMIN_PASSWORD, DBEncriptacion.encrypt("1234")); // Ahora cifrado
             db.insert(TABLA_ADMINISTRADOR, null, valores);
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,7 +132,7 @@ public class DBConexion extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             String passwordCifrada = cursor.getString(0);
             try {
-                String passwordDesencriptada = DB_Encriptacion.decrypt(passwordCifrada);
+                String passwordDesencriptada = DBEncriptacion.decrypt(passwordCifrada);
                 Log.d("LOGIN_DEBUG", "Desencriptada: " + passwordDesencriptada + " vs ingresada: " + password);
                 if (passwordDesencriptada.equals(password)) {
                     cursor.close();
@@ -229,7 +228,7 @@ public class DBConexion extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("admin_usuario", usuario);
-            valores.put("admin_password", DB_Encriptacion.encrypt(password));
+            valores.put("admin_password", DBEncriptacion.encrypt(password));
             long id = db.insert("administrador", null, valores);
             return id != -1;
         } catch (Exception e) {
@@ -263,7 +262,7 @@ public class DBConexion extends SQLiteOpenHelper {
         }
         if (!nuevaPassword.isEmpty()) {
             try {
-                valores.put(ADMIN_PASSWORD, DB_Encriptacion.encrypt(nuevaPassword));
+                valores.put(ADMIN_PASSWORD, DBEncriptacion.encrypt(nuevaPassword));
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -284,7 +283,7 @@ public class DBConexion extends SQLiteOpenHelper {
         valores.put("sector", sector);
         valores.put("usuario", usuario);
         try {
-            valores.put("password", DB_Encriptacion.encrypt(password));
+            valores.put("password", DBEncriptacion.encrypt(password));
         } catch (Exception e) {
             e.printStackTrace();
             return false; // si hay error al encriptar, no insertar
@@ -304,7 +303,7 @@ public class DBConexion extends SQLiteOpenHelper {
         if (nuevoSector != null) valores.put("sector", nuevoSector);
         if (nuevoUsuario != null) valores.put("usuario", nuevoUsuario);
         try {
-            valores.put("password", DB_Encriptacion.encrypt(nuevaPassword));
+            valores.put("password", DBEncriptacion.encrypt(nuevaPassword));
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -349,7 +348,7 @@ public class DBConexion extends SQLiteOpenHelper {
         if (!nuevoEmail.isEmpty()) valores.put("email", nuevoEmail);
         if (!nuevaPassword.isEmpty()) {
             try {
-                valores.put("password", DB_Encriptacion.encrypt(nuevaPassword));
+                valores.put("password", DBEncriptacion.encrypt(nuevaPassword));
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;

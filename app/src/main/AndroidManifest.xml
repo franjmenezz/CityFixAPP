@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".Activity.Activity_ConexionDB"
+        android:name=".Activity.ActivityConexionDB"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -32,14 +32,14 @@
         <activity android:name=".Activity.Registro"></activity>
         <activity android:name=".Activity.Configuracion"></activity>
         <activity android:name=".Modelo.Usuario"></activity>
-        <activity android:name=".Activity.Activity_Administrador" />
+        <activity android:name=".Activity.ActivityAdministrador" />
         <activity android:name=".Activity.LoginAdministrador"/>
-        <activity android:name=".Activity.Activity_ConexionDB" />
+        <activity android:name=".Activity.ActivityConexionDB" />
         <activity android:name=".Activity.LoginTecnico"/>
-        <activity android:name=".Activity.Activity_Ciudadano"/>
-        <activity android:name=".Activity.Activity_CrearIncidencia"/>
-        <activity android:name=".Activity.Activity_SeleccionarUbicacion"/>
-        <activity android:name=".Activity.Activity_AdministrarIncidencias"/>
+        <activity android:name=".Activity.ActivityCiudadano"/>
+        <activity android:name=".Activity.ActivityCrearIncidencia"/>
+        <activity android:name=".Activity.ActivitySeleccionarUbicacion"/>
+        <activity android:name=".Activity.ActivityAdministrarIncidencias"/>
         <activity android:name=".Activity.ActivityTecnico"/>
 
         <meta-data

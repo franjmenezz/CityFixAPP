@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.cityfixapp.DB.DBConexion;
-import com.example.cityfixapp.DB.DB_Encriptacion;
+import com.example.cityfixapp.DB.DBEncriptacion;
 
 public class AdminHelper {
 
@@ -17,7 +17,7 @@ public class AdminHelper {
         try {
             ContentValues valores = new ContentValues();
             valores.put("admin_usuario", "admin");
-            valores.put("admin_password", DB_Encriptacion.encrypt("1234"));
+            valores.put("admin_password", DBEncriptacion.encrypt("1234"));
 
             db.insert("administrador", null, valores);
             Log.d("AdminHelper", "Administrador insertado correctamente");

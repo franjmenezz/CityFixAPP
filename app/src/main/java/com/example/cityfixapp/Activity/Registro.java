@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.R;
-import com.example.cityfixapp.DB.DB_Encriptacion;
+import com.example.cityfixapp.DB.DBEncriptacion;
 
 public class Registro extends AppCompatActivity {
 
@@ -65,12 +65,12 @@ public class Registro extends AppCompatActivity {
 
         try {
             ContentValues valores = new ContentValues();
-            valores.put("dni", DB_Encriptacion.encrypt(dni));
+            valores.put("dni", DBEncriptacion.encrypt(dni));
             valores.put("nombre", nombre);// No se encripta
             valores.put("usuario", usuario);
-            valores.put("email", DB_Encriptacion.encrypt(email));
-            valores.put("password", DB_Encriptacion.encrypt(contraseña));
-            valores.put("telefono", DB_Encriptacion.encrypt(telefono));
+            valores.put("email", DBEncriptacion.encrypt(email));
+            valores.put("password", DBEncriptacion.encrypt(contraseña));
+            valores.put("telefono", DBEncriptacion.encrypt(telefono));
 
             long resultado = db.insert("ciudadano", null, valores);
 

@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Activity_CrearIncidencia extends AppCompatActivity {
+public class ActivityCrearIncidencia extends AppCompatActivity {
 
     private static final int REQUEST_UBICACION = 1001;
     private static final int REQUEST_IMAGE_PICK = 2001;
@@ -70,7 +69,7 @@ public class Activity_CrearIncidencia extends AppCompatActivity {
         btnGuardarIncidencia.setOnClickListener(v -> guardarIncidencia());
 
         btnSeleccionarUbicacion.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Activity_SeleccionarUbicacion.class);
+            Intent intent = new Intent(this, ActivitySeleccionarUbicacion.class);
             startActivityForResult(intent, REQUEST_UBICACION);
         });
 

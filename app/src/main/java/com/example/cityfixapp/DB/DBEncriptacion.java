@@ -5,7 +5,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import android.util.Base64;
 
-public class DB_Encriptacion {
+public class DBEncriptacion {
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1234567890123456"; // Clave de 16 caracteres
 

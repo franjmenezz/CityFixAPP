@@ -4,7 +4,7 @@ import android.app.Application;
 import com.example.cityfixapp.DB.DBConexion;
 import com.example.cityfixapp.Helper.AdminHelper;
 
-public class Activity_ConexionDB extends Application {
+public class ActivityConexionDB extends Application {
 
     @Override
     public void onCreate() {

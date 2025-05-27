@@ -1,6 +1,5 @@
 package com.example.cityfixapp.Activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import com.example.cityfixapp.R;
 
 import java.util.List;
 
-public class Activity_Administrador extends AppCompatActivity implements MenuAdministradorAdapter.OnMenuClickListener {
+public class ActivityAdministrador extends AppCompatActivity implements MenuAdministradorAdapter.OnMenuClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +78,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
                 .setTitle("Cerrando sesión")
                 .setMessage("¿Estás seguro de que deseas cerrar sesión?")
                 .setPositiveButton("Sí", (dialog, which) -> {
-                    startActivity(new Intent(Activity_Administrador.this, Login.class));
+                    startActivity(new Intent(ActivityAdministrador.this, Login.class));
                     finish();
                 })
                 .setNegativeButton("No", null)
@@ -88,7 +87,7 @@ public class Activity_Administrador extends AppCompatActivity implements MenuAdm
 
     // Implementación del listener del menú
     @Override public void mostrarIncidencias() {
-        startActivity(new Intent(this, Activity_AdministrarIncidencias.class));
+        startActivity(new Intent(this, ActivityAdministrarIncidencias.class));
     }
 
     @Override public void nuevoAdministrador() {

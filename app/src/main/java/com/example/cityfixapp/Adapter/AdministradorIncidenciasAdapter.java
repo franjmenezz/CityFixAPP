@@ -32,7 +32,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<AdministradorIncidencias_Adapter.ViewHolder> {
+public class AdministradorIncidenciasAdapter extends RecyclerView.Adapter<AdministradorIncidenciasAdapter.ViewHolder> {
     private final Context context;
 
 
@@ -41,7 +41,7 @@ public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<Admin
     private DBConexion dbConexion;
 
 
-    public AdministradorIncidencias_Adapter(Context context, List<Incidencia> lista) {
+    public AdministradorIncidenciasAdapter(Context context, List<Incidencia> lista) {
         this.context = context;
         this.dbConexion = new DBConexion(context);
 
@@ -58,7 +58,7 @@ public class AdministradorIncidencias_Adapter extends RecyclerView.Adapter<Admin
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdministradorIncidencias_Adapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdministradorIncidenciasAdapter.ViewHolder holder, int position) {
         Incidencia inc = listaFiltrada.get(position);
         holder.tvTitulo.setText(inc.titulo);
         holder.tvEstado.setText("Estado: " + inc.estado);
