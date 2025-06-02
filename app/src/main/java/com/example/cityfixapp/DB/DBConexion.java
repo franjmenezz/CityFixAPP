@@ -397,8 +397,4 @@ public class DBConexion extends SQLiteOpenHelper {
         return filasAfectadas > 0;
     }
 
-
-
-
-
 }
