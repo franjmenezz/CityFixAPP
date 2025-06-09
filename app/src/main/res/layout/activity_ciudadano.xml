@@ -57,11 +57,6 @@
             app:layout_constraintTop_toTopOf="@id/etBuscarIncidencia" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Título "Historial de Incidencias" -->
-    <!-- Título "Historial de Incidencias" centrado -->
-
-
-    <!-- Lista de incidencias -->
 
     <TextView
         android:id="@+id/tvTituloHistorial"
