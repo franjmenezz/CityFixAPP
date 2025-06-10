@@ -19,20 +19,27 @@ public class LoginAdministrador extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_administrador);
 
+        // Inicializar componentes de la interfaz
         EditText etAdminUsuario = findViewById(R.id.Usuario);
         EditText etAdminPassword = findViewById(R.id.Contraseña);
         Button btnLoginAdmin = findViewById(R.id.BTAceptarlogin);
 
+        // Configurar el botón de inicio de sesión
+
         btnLoginAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Obtener los valores ingresados por el usuario
                 String inputUsername = etAdminUsuario.getText().toString().trim();
                 String inputPassword = etAdminPassword.getText().toString().trim();
+                // Validar que los campos no estén vacíos
 
                 if (inputUsername.isEmpty() || inputPassword.isEmpty()) {
                     Toast.makeText(LoginAdministrador.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                // Verificar las credenciales del administrador
 
                 DBConexion dbConexion = new DBConexion(LoginAdministrador.this);
                 if (dbConexion.verificarCredenciales("administrador", "admin_usuario", "admin_password", inputUsername, inputPassword)) {

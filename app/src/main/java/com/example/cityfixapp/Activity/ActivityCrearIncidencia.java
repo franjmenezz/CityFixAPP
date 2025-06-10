@@ -30,6 +30,7 @@ import java.util.Locale;
 
 public class ActivityCrearIncidencia extends AppCompatActivity {
 
+    // Constantes para los requests
     private static final int REQUEST_UBICACION = 1001;
     private static final int REQUEST_IMAGE_PICK = 2001;
 
@@ -38,6 +39,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
     private double longitudSeleccionada = 0;
 
 
+    // Componentes de la interfaz
     private EditText etTitulo, etDescripcion;
     private Button btnGuardarIncidencia, btnSeleccionarUbicacion, btnSeleccionarFoto;
     private ImageView ivFotoSeleccionada;
@@ -50,10 +52,14 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_incidencia);
 
+        // Configurar la Toolbar
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(0, insets.getInsets(WindowInsetsCompat.Type.systemBars()).top, 0, 0);
             return insets;
         });
+
+        // Inicializar componentes de la interfaz
 
         dbConexion = new DBConexion(this);
         idCiudadano = getIntent().getIntExtra("id_ciudadano", -1);
@@ -68,6 +74,8 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
 
         btnGuardarIncidencia.setOnClickListener(v -> guardarIncidencia());
 
+        // Configurar los botones para seleccionar ubicación y foto
+
         btnSeleccionarUbicacion.setOnClickListener(v -> {
             Intent intent = new Intent(this, ActivitySeleccionarUbicacion.class);
             startActivityForResult(intent, REQUEST_UBICACION);
@@ -79,6 +87,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_IMAGE_PICK);
         });
 
+        // Inicializar el MapView
         mapView = findViewById(R.id.mapViewUbicacion);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -90,7 +99,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
 
     }
 
-    private void guardarIncidencia() {
+    private void guardarIncidencia() { // Método para guardar la incidencia
         String titulo = etTitulo.getText().toString().trim();
         String descripcion = etDescripcion.getText().toString().trim();
         String ubicacion = "Lat: " + latitudSeleccionada + ", Lng: " + longitudSeleccionada;
@@ -102,6 +111,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
             return;
         }
 
+        // Crear ContentValues para insertar en la base de datos
         ContentValues valores = new ContentValues();
         valores.put("titulo", titulo);
         valores.put("descripcion", descripcion);
@@ -128,6 +138,8 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
             }
         }
 
+        // Insertar en la base de datos
+
         long resultado = dbConexion.getWritableDatabase().insert("incidencias", null, valores);
         if (resultado != -1) {
             Toast.makeText(this, "Incidencia creada correctamente", Toast.LENGTH_SHORT).show();
@@ -137,6 +149,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
         }
     }
 
+    // Manejar el resultado de las actividades iniciadas
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -144,6 +157,8 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
         if (requestCode == REQUEST_UBICACION && resultCode == RESULT_OK && data != null) {
             latitudSeleccionada = data.getDoubleExtra("lat", 0);
             longitudSeleccionada = data.getDoubleExtra("lng", 0);
+
+            // Actualizar el MapView con la nueva ubicación
 
             mapView.getMapAsync(googleMap -> {
                 googleMap.clear(); // Limpia anteriores
@@ -153,6 +168,7 @@ public class ActivityCrearIncidencia extends AppCompatActivity {
             });
         }
 
+        // Manejar la selección de foto
 
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
             fotoUri = data.getData();

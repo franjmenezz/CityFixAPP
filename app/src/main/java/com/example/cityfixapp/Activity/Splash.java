@@ -17,7 +17,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Start the main activity after a delay
+        // Usar un Handler para retrasar la transición a la pantalla de inicio
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(Splash.this, Login.class);
             startActivity(intent);

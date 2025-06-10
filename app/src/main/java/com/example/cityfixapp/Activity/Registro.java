@@ -22,6 +22,8 @@ public class Registro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
+
+        // Inicializar componentes de la interfaz
         EditText etDNI = findViewById(R.id.DNI);
         EditText etNombre = findViewById(R.id.Nombre);
         EditText etUsuario = findViewById(R.id.Usuario);
@@ -30,6 +32,8 @@ public class Registro extends AppCompatActivity {
         EditText etTelefono = findViewById(R.id.Telefono);
         Button btnRegistrar = findViewById(R.id.BTAceptarRegistro);
         Button btnCancelar = findViewById(R.id.BTCancelarRegistro);
+
+        // Configurar el botón de registro
 
         btnRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +45,8 @@ public class Registro extends AppCompatActivity {
                 String password = etPassword.getText().toString().trim();
                 String telefono = etTelefono.getText().toString().trim();
 
+                // Validar que los campos no estén vacíos
+
                 if (dni.isEmpty() || nombre.isEmpty() || email.isEmpty() || password.isEmpty() || telefono.isEmpty()) {
                     Toast.makeText(Registro.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
@@ -48,6 +54,8 @@ public class Registro extends AppCompatActivity {
                 }
             }
         });
+
+        // Configurar el botón de cancelar registro
 
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,9 +67,12 @@ public class Registro extends AppCompatActivity {
         });
     }
 
+    // Método para registrar un ciudadano en la base de datos
     private void registrarCiudadano(String dni, String nombre, String usuario, String email, String contraseña, String telefono) {
         DBConexion dbConexion = new DBConexion(this);
         SQLiteDatabase db = dbConexion.getWritableDatabase();
+
+        // Verificar si el usuario ya existe
 
         try {
             ContentValues valores = new ContentValues();
@@ -72,20 +83,23 @@ public class Registro extends AppCompatActivity {
             valores.put("password", DBEncriptacion.encrypt(contraseña));
             valores.put("telefono", DBEncriptacion.encrypt(telefono));
 
+            // Insertar el nuevo ciudadano en la base de datos
+
             long resultado = db.insert("ciudadano", null, valores);
 
+            // Verificar si la inserción fue exitosa
             if (resultado != -1) {
                 Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Registro.this, Login.class);
                 startActivity(intent);
                 finish();
-            } else {
+            } else { // Si la inserción falla
                 Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        } finally {
+        } finally { // Cerrar la base de datos para liberar recursos
             db.close();
         }
     }

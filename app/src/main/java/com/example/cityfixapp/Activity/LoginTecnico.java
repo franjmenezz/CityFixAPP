@@ -22,23 +22,33 @@ public class LoginTecnico extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_tecnico);
 
+        // Inicializar componentes de la interfaz
+
         etUsuario = findViewById(R.id.Usuario);
         etPassword = findViewById(R.id.Contraseña);
         btnLogin = findViewById(R.id.BTAceptarlogin);
 
         dbConexion = new DBConexion(this);
 
+
+        // Configurar el botón de inicio de sesión
         btnLogin.setOnClickListener(v -> {
             String usuario = etUsuario.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
+
+            // Validar que los campos no estén vacíosÇ
+
 
             if (usuario.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginTecnico.this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Verificar las credenciales del técnico
+
             boolean valido = dbConexion.verificarCredenciales("tecnicos", "usuario", "password", usuario, password);
             if (valido) {
+
                 // Obtén el id del técnico con el usuario dado
                 int idTecnico = dbConexion.obtenerIdTecnicoPorNombre(usuario);
 
@@ -49,7 +59,7 @@ public class LoginTecnico extends AppCompatActivity {
                 intent.putExtra("id_tecnico", idTecnico);
                 startActivity(intent);
                 finish();
-            } else {
+            } else {// Si las credenciales son incorrectas
                 Toast.makeText(LoginTecnico.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
             }
         });

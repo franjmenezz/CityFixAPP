@@ -39,12 +39,16 @@ public class ActivityAdministrarIncidencias extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_administrar_incidencias);
 
+        // Configurar la Toolbar
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
             v.setPadding(0, insets.getSystemWindowInsetTop(), 0, 0);
             return insets;
         });
+
+        // Inicializar la base de datos y el RecyclerView
 
         dbConexion = new DBConexion(this);
         recyclerView = findViewById(R.id.recyclerViewIncidencias);
@@ -63,6 +67,8 @@ public class ActivityAdministrarIncidencias extends AppCompatActivity {
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, opciones);
         spinnerFiltros.setAdapter(adapterSpinner);
 
+        // Configurar el Spinner para ordenar las incidencias
+
         spinnerFiltros.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -78,13 +84,11 @@ public class ActivityAdministrarIncidencias extends AppCompatActivity {
                         break;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-
-
+        // Configurar el EditText para buscar incidencias
         etBuscar.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -93,13 +97,14 @@ public class ActivityAdministrarIncidencias extends AppCompatActivity {
             }
         });
     }
+    // Método para refrescar el RecyclerView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    // Método para manejar la selección de opciones del menú
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -111,7 +116,7 @@ public class ActivityAdministrarIncidencias extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+    // Método para mostrar un diálogo de confirmación al cerrar sesión
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrando Sesión")

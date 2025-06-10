@@ -157,6 +157,22 @@ public class DBConexion extends SQLiteOpenHelper {
         cursor.close();
         return -1;
     }
+
+    public boolean insertarIncidencia(Incidencia incidencia) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("titulo", incidencia.titulo);
+        valores.put("descripcion", incidencia.descripcion);
+        valores.put("ubicacion", incidencia.ubicacion);
+        valores.put("foto", incidencia.foto);
+        valores.put("fecha_hora", incidencia.fechaHora);
+        valores.put("estado", incidencia.estado);
+        valores.put("id_ciudadano", incidencia.idCiudadano);
+        valores.put("id_tecnico", incidencia.idTecnico);
+        long resultado = db.insert("incidencias", null, valores);
+        return resultado != -1;
+    }
+
     public List<Incidencia> obtenerTodasLasIncidencias() {
         List<Incidencia> lista = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

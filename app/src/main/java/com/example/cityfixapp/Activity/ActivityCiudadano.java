@@ -39,6 +39,7 @@ public class ActivityCiudadano extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ciudadano);
 
+        // Configurar la Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
@@ -46,6 +47,7 @@ public class ActivityCiudadano extends AppCompatActivity {
             return insets;
         });
 
+        // Inicializar componentes de la interfaz
         EditText etBuscar = findViewById(R.id.etBuscarIncidencia);
         rvMisIncidencias = findViewById(R.id.rvMisIncidencias);
         rvMisIncidencias.setLayoutManager(new LinearLayoutManager(this));
@@ -55,6 +57,8 @@ public class ActivityCiudadano extends AppCompatActivity {
 
         refrescarRecyclerView();
 
+        // Configurar el adaptador
+
         etBuscar.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -63,6 +67,7 @@ public class ActivityCiudadano extends AppCompatActivity {
             }
         });
 
+        // Configurar el botón para crear una nueva incidencia
         Button btnNuevaIncidencia = findViewById(R.id.btnNuevaIncidencia);
         btnNuevaIncidencia.setOnClickListener(v -> {
             Intent intent = new Intent(ActivityCiudadano.this, ActivityCrearIncidencia.class);
@@ -71,11 +76,14 @@ public class ActivityCiudadano extends AppCompatActivity {
         });
     }
 
+    // Método para refrescar el RecyclerView al volver a la actividad
     @Override
     protected void onResume() {
         super.onResume();
         refrescarRecyclerView();
     }
+
+    // Método para refrescar el RecyclerView con las incidencias del ciudadano
 
     private void refrescarRecyclerView() {
         List<Incidencia> listaActualizada = cargarIncidencias(idCiudadano);
@@ -83,6 +91,9 @@ public class ActivityCiudadano extends AppCompatActivity {
         rvMisIncidencias.setAdapter(adapter);
         rvMisIncidencias.scrollToPosition(0);
     }
+
+    // Método para cargar las incidencias del ciudadano desde la base de datos
+
 
     private List<Incidencia> cargarIncidencias(int idCiudadano) {
         List<Incidencia> lista = new ArrayList<>();
@@ -109,6 +120,7 @@ public class ActivityCiudadano extends AppCompatActivity {
     }
 
 
+    // Método para crear el menú de opciones y manejar las acciones del menú
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,6 +129,7 @@ public class ActivityCiudadano extends AppCompatActivity {
         return true;
     }
 
+    // Método para manejar la selección de opciones del menú
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -129,6 +142,8 @@ public class ActivityCiudadano extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // Método para mostrar un diálogo de confirmación al cerrar sesión
 
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)

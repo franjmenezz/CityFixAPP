@@ -33,6 +33,8 @@ public class ActivityTecnico extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tecnico);
 
+        // Configurar la Toolbar
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
@@ -45,6 +47,7 @@ public class ActivityTecnico extends AppCompatActivity {
 
         dbConexion = new DBConexion(this);
 
+        // Inicializar RecyclerView
         // Obtener idTecnico de extras
         idTecnico = getIntent().getIntExtra("id_tecnico", -1);
         Log.d("ActivityTecnico", "ID Técnico recibido: " + idTecnico);
@@ -60,6 +63,7 @@ public class ActivityTecnico extends AppCompatActivity {
         return true;
     }
 
+    // Manejo de eventos del menú
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -73,6 +77,7 @@ public class ActivityTecnico extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Método para mostrar el diálogo de confirmación de cierre de sesión
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrando sesión")
@@ -85,6 +90,8 @@ public class ActivityTecnico extends AppCompatActivity {
                 .show();
     }
 
+
+    // Método para cargar las incidencias asignadas al técnico
     private void cargarIncidenciasAsignadas() {
         List<Incidencia> listaIncidencias = dbConexion.obtenerIncidenciasPorTecnico(idTecnico);
         Log.d("ActivityTecnico", "Incidencias encontradas: " + listaIncidencias.size());

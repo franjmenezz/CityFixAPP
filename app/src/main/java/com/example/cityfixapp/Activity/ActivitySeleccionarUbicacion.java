@@ -22,6 +22,7 @@ public class ActivitySeleccionarUbicacion extends FragmentActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seleccionar_ubicacion);
 
+        // Configurar el mapa
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -35,6 +36,7 @@ public class ActivitySeleccionarUbicacion extends FragmentActivity implements On
         LatLng inicial = new LatLng(40.4168, -3.7038); // Madrid por defecto
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(inicial, 15));
 
+        // Configurar el mapa para que responda a los clics
         mMap.setOnMapClickListener(latLng -> {
             mMap.clear();
             ubicacionSeleccionada = latLng;

@@ -60,6 +60,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         return true;
     }
 
+    // Manejo de opciones del menú
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
@@ -73,6 +75,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         return super.onOptionsItemSelected(item);
     }
 
+
+    // Método para mostrar un diálogo de confirmación antes de cerrar sesión
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrando sesión")
@@ -122,6 +126,9 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         mostrarDialogoMostrarCiudadanos();
     }
 
+    // Métodos para mostrar diálogos de creación, modificación y visualización de administradores, técnicos y ciudadanos
+
+    // Método para mostrar diálogo de creación de nuevo administrador
     private void mostrarDialogoNuevoAdministrador() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Nuevo Administrador");
@@ -159,7 +166,7 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         builder.show();
     }
 
-
+    // Método para mostrar diálogo de modificación de administrador
     private void mostrarDialogoModificarAdministrador() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Modificar Administrador");
@@ -215,6 +222,7 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         dialog.show();
     }
 
+    // Método para mostrar diálogo con lista de administradores registrados
     private void mostrarDialogoMostrarAdministradores() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Administradores registrados");
@@ -258,6 +266,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
 
         builder.show();
     }
+
+    // Método para mostrar diálogo de creación de nuevo técnico
     private void mostrarDialogoNuevoTecnico() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Nuevo Técnico");
@@ -296,6 +306,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
 
         builder.show();
     }
+
+    // Método para mostrar diálogo de modificación de técnico
 
     private void mostrarDialogoModificarTecnico() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -357,6 +369,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         dialog.show();
     }
 
+    // Método para mostrar diálogo con lista de técnicos registrados
+
     private void mostrarDialogoMostrarTecnicos() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Técnicos registrados");
@@ -377,6 +391,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
         builder.show();
     }
+
+    // Método para mostrar diálogo con lista de ciudadanos registrados
 
     private void mostrarDialogoMostrarCiudadanos() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -399,6 +415,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         builder.show();
     }
 
+
+    // Método para mostrar diálogo de modificación de ciudadano
 
     private void mostrarDialogoModificarCiudadano() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
