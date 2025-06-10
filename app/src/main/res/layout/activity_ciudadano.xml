@@ -38,6 +38,10 @@
             android:background="@drawable/bg_buscador"
             android:padding="12dp"
             android:inputType="text"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnNuevaIncidencia"
             app:layout_constraintTop_toTopOf="parent"

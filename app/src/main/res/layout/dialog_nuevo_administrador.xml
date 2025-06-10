@@ -17,7 +17,12 @@
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"/>
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+            android:inputType="textPersonName">
+        </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -32,6 +37,10 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:inputType="textPassword"/>
         </com.google.android.material.textfield.TextInputLayout>
 

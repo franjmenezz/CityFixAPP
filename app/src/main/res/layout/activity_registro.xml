@@ -47,11 +47,19 @@
             app:layout_constraintTop_toBottomOf="@id/tvRegistrandoUsuario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/DNI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:hint="DNI"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -64,12 +72,22 @@
             app:layout_constraintTop_toBottomOf="@id/layoutDNI"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre"
+
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,11 +99,19 @@
             app:layout_constraintTop_toBottomOf="@id/layoutNombre"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Usuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:hint="Usuario"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -98,12 +124,23 @@
             app:layout_constraintTop_toBottomOf="@id/layoutUsuario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
+
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,12 +153,20 @@
             app:layout_constraintTop_toBottomOf="@id/layoutEmail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Contraseña"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,12 +178,20 @@
             app:layout_constraintTop_toBottomOf="@id/layoutPassword"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginTop="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Telefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Teléfono"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 

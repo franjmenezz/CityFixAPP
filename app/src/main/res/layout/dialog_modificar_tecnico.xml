@@ -31,12 +31,21 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo nombre"
             app:endIconMode="none"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,12 +55,20 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo sector"
             app:endIconMode="none"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoSector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,12 +78,21 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo usuario"
             app:endIconMode="none"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,12 +102,22 @@
             android:layout_height="wrap_content"
             android:hint="Nueva contraseña"
             app:endIconMode="password_toggle"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevaPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -42,6 +42,11 @@
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/tvInicioSesion"
         app:layout_constraintStart_toStartOf="parent"
+
+        app:boxStrokeColor="@color/atoll"
+        app:hintTextColor="@color/atoll"
+
+
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -49,6 +54,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombre de Usuario"
+
+            android:textColor="@color/atoll"
+            android:textColorHint="@color/atoll"
+
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,12 +70,21 @@
         app:endIconMode="password_toggle"
         app:layout_constraintTop_toBottomOf="@id/layoutUsuario"
         app:layout_constraintStart_toStartOf="parent"
+
+        app:boxStrokeColor="@color/atoll"
+        app:hintTextColor="@color/atoll"
+
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/Contraseña"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:hint="Contraseña"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>

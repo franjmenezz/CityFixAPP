@@ -32,12 +32,18 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo DNI"
             app:endIconMode="none"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoDni"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,12 +53,21 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo nombre (opcional)"
             app:endIconMode="none"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,12 +77,20 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo email (opcional)"
             app:endIconMode="none"
+
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,12 +100,19 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo usuario (opcional)"
             app:endIconMode="none"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,12 +122,18 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo teléfono (opcional)"
             app:endIconMode="none"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,12 +143,18 @@
             android:layout_height="wrap_content"
             android:hint="Nuevo DNI (opcional)"
             app:endIconMode="none"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
             android:layout_marginBottom="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevoDNI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,12 +164,19 @@
             android:layout_height="wrap_content"
             android:hint="Nueva contraseña"
             app:endIconMode="password_toggle"
+            app:boxStrokeColor="@color/atoll"
+            app:hintTextColor="@color/atoll"
+
             android:layout_marginBottom="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNuevaPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
+                android:textColor="@color/atoll"
+                android:textColorHint="@color/atoll"
+
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,6 +190,7 @@
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/atoll"
                 android:text="Cancelar"
                 android:layout_marginEnd="16dp" />
 
@@ -148,6 +198,7 @@
                 android:id="@+id/btnGuardar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/atoll"
                 android:text="Guardar" />
         </LinearLayout>
 
