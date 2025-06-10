@@ -136,10 +136,12 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_nuevo_administrador, null);
         final EditText inputUsuario = viewInflated.findViewById(R.id.etUsuario);
         final EditText inputPassword = viewInflated.findViewById(R.id.etPassword);
+        Button btnGuardar = viewInflated.findViewById(R.id.btnGuardar);
+        Button btnCancelar = viewInflated.findViewById(R.id.btnCancelar);
 
         builder.setView(viewInflated);
-
-        builder.setPositiveButton("Guardar", (dialog, which) -> {
+        AlertDialog dialog = builder.create();
+        btnGuardar.setOnClickListener(v -> {
             String usuario = inputUsuario.getText().toString().trim();
             String password = inputPassword.getText().toString().trim();
 
@@ -161,9 +163,9 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
 
         });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
 
-        builder.show();
     }
 
     // Método para mostrar diálogo de modificación de administrador
@@ -187,7 +189,9 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAdministradores.setAdapter(adapterSpinner);
 
+
         AlertDialog dialog = builder.setView(viewInflated).create();
+
 
         btnGuardar.setOnClickListener(v -> {
             String usuarioActual = (String) spinnerAdministradores.getSelectedItem();
@@ -230,6 +234,7 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_administradores, null);
         TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadAdmins);
         RecyclerView rvAdministradores = viewInflated.findViewById(R.id.rvAdministradores);
+        Button btnCerrar = viewInflated.findViewById(R.id.btnCerrar);
 
         DBConexion dbConexion = new DBConexion(this);
         List<String> administradores = dbConexion.obtenerUsuariosAdministradores();
@@ -241,8 +246,8 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         rvAdministradores.setLayoutManager(new LinearLayoutManager(this));
         // Adaptador simple para mostrar lista de strings
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, administradores);
-
         // RecyclerView no usa ArrayAdapter, sino RecyclerView.Adapter, así que necesitamos uno simple:
+
         rvAdministradores.setAdapter(new RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -261,10 +266,11 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         });
 
         builder.setView(viewInflated);
-
-        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
-
-        builder.show();
+        // Crear el diálogo y guardarlo en una variable
+        AlertDialog dialog = builder.create();
+        // Ahora puedes cerrar el diálogo desde el botón
+        btnCerrar.setOnClickListener(v -> dialog.dismiss());
+        dialog.show(); // Mostrar el diálogo
     }
 
     // Método para mostrar diálogo de creación de nuevo técnico
@@ -277,10 +283,13 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         final EditText inputSector = viewInflated.findViewById(R.id.etSector);
         final EditText inputUsuario = viewInflated.findViewById(R.id.etUsuario);
         final EditText inputPassword = viewInflated.findViewById(R.id.etPassword);
+        Button btnGuardar = viewInflated.findViewById(R.id.btnGuardar);
+        Button btnCancelar = viewInflated.findViewById(R.id.btnCancelar);
 
         builder.setView(viewInflated);
+        AlertDialog dialog = builder.create();
 
-        builder.setPositiveButton("Guardar", (dialog, which) -> {
+        btnGuardar.setOnClickListener(v -> {
             String nombre = inputNombre.getText().toString().trim();
             String sector = inputSector.getText().toString().trim();
             String usuario = inputUsuario.getText().toString().trim();
@@ -302,9 +311,9 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
             }
         });
 
-        builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+        btnCancelar.setOnClickListener(v -> dialog.dismiss());
 
-        builder.show();
+        dialog.show();
     }
 
     // Método para mostrar diálogo de modificación de técnico
@@ -378,6 +387,7 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_tecnicos, null);
         TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadTecnicos);
         RecyclerView rvTecnicos = viewInflated.findViewById(R.id.rvTecnicos);
+        Button btnCerrar = viewInflated.findViewById(R.id.btnCerrar);
 
         DBConexion dbConexion = new DBConexion(this);
         List<String> tecnicos = dbConexion.obtenerUsuariosTecnicos();
@@ -388,8 +398,12 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         rvTecnicos.setAdapter(new ListasAdapter(tecnicos));
 
         builder.setView(viewInflated);
-        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
-        builder.show();
+        // Crear el diálogo y guardarlo en una variable
+        AlertDialog dialog = builder.create();
+        // Ahora puedes cerrar el diálogo desde el botón
+        btnCerrar.setOnClickListener(v -> dialog.dismiss());
+        dialog.show(); // Mostrar el diálogo
+
     }
 
     // Método para mostrar diálogo con lista de ciudadanos registrados
@@ -400,6 +414,7 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
 
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.dialog_mostrar_ciudadanos, null);
         TextView tvCantidad = viewInflated.findViewById(R.id.tvCantidadCiudadanos);
+        Button btnCerrar = viewInflated.findViewById(R.id.btnCerrar);
         RecyclerView rvCiudadanos = viewInflated.findViewById(R.id.rvCiudadanos);
 
         DBConexion dbConexion = new DBConexion(this);
@@ -411,9 +426,16 @@ public class ActivityAdministrador extends AppCompatActivity implements MenuAdmi
         rvCiudadanos.setAdapter(new ListasAdapter(ciudadanos));
 
         builder.setView(viewInflated);
-        builder.setPositiveButton("Cerrar", (dialog, which) -> dialog.dismiss());
-        builder.show();
+
+        // Crear el diálogo y guardarlo en una variable
+        AlertDialog dialog = builder.create();
+
+        // Ahora puedes cerrar el diálogo desde el botón
+        btnCerrar.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show(); // Mostrar el diálogo
     }
+
 
 
     // Método para mostrar diálogo de modificación de ciudadano

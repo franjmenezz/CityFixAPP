@@ -10,15 +10,17 @@ import com.example.cityfixapp.DB.DBEncriptacion;
 
 public class AdminHelper {
 
+    // Método para insertar un administrador por defecto en la base de datos
     public static void insertarAdminPorDefecto(Context context) {
         DBConexion dbConexion = new DBConexion(context);
         SQLiteDatabase db = dbConexion.getWritableDatabase();
 
-        try {
+        try { // Verificar si la tabla 'administrador' ya tiene un registro
             ContentValues valores = new ContentValues();
             valores.put("admin_usuario", "admin");
             valores.put("admin_password", DBEncriptacion.encrypt("1234"));
 
+            // Intentar insertar el administrador por defecto
             db.insert("administrador", null, valores);
             Log.d("AdminHelper", "Administrador insertado correctamente");
         } catch (Exception e) {

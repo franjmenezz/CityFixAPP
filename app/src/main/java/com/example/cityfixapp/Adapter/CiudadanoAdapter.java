@@ -29,12 +29,15 @@ import java.util.List;
 
 public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.ViewHolder> {
 
+
+    // Lista original y filtrada
     private List<Incidencia> listaOriginal;
     private List<Incidencia> listaFiltrada;
 
     private Context context;
     private DBConexion dbConexion;
 
+    // Constructor
     public CiudadanoAdapter(Context context, List<Incidencia> lista) {
         this.context = context;
         this.dbConexion = new DBConexion(context);
@@ -42,12 +45,17 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         this.listaFiltrada = new ArrayList<>(lista);
     }
 
+
+    // Método para refrescar el RecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View vista = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_incidencia, parent, false);
         return new ViewHolder(vista);
     }
+
+
+    // Método para enlazar los datos a cada ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -75,6 +83,7 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         holder.btnVerDetalles.setOnClickListener(v -> mostrarDialogoDetalles(inc));
     }
 
+    // Método para obtener el número de elementos en la lista filtrada
     @Override
     public int getItemCount() {
         return listaFiltrada.size();
@@ -94,6 +103,7 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         }
     }
 
+    // Método para filtrar la lista de incidencias
     public void filtrar(String texto) {
         listaFiltrada.clear();
         if (texto.isEmpty()) {
@@ -109,6 +119,7 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         notifyDataSetChanged();
     }
 
+    // Método para mostrar el diálogo de detalles de la incidencia
     private void mostrarDialogoDetalles(Incidencia inc) {
         View vista = LayoutInflater.from(context).inflate(R.layout.dialog_detalle_incidencia, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setView(vista);
@@ -128,15 +139,16 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         tvFecha.setText("Fecha: " + inc.fechaHora);
         tvEstado.setText("Estado: " + inc.estado);
 
-        // ✅ Consulta adicional SOLO para la foto
+        // Cargar foto desde la base de datos
         byte[] fotoBytes = cargarFotoDesdeBD(inc.id);
-        if (fotoBytes != null && fotoBytes.length > 0) {
+        if (fotoBytes != null && fotoBytes.length > 0) { // Verifica si hay foto
             Bitmap bitmap = BitmapFactory.decodeByteArray(fotoBytes, 0, fotoBytes.length);
             ivFoto.setImageBitmap(bitmap);
-        } else {
+        } else {// Si no hay foto, muestra un icono por defecto
             ivFoto.setImageResource(R.drawable.baseline_no_photography_24);
         }
 
+        // Eliminar incidencia
         btnEliminar.setOnClickListener(v -> {
             eliminarIncidenciaDeBD(inc.id);
             listaOriginal.remove(inc);
@@ -146,15 +158,18 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
             dialog.dismiss();
         });
 
+        // Configurar MapView
         mapView.onCreate(null);
         mapView.onResume(); // NECESARIO para que se muestre
 
+        // Inicializar el mapa
         try {
             MapsInitializer.initialize(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        // Configurar el MapView para mostrar la ubicación de la incidencia
         mapView.getMapAsync(googleMap -> {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
 
@@ -175,12 +190,13 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
         dialog.show();
     }
 
-
+    // Método para eliminar una incidencia de la base de datos
     private void eliminarIncidenciaDeBD(int id) {
         SQLiteDatabase db = dbConexion.getWritableDatabase();
         db.delete("incidencias", "_id = ?", new String[]{String.valueOf(id)});
     }
 
+    // Método para cargar la foto de la incidencia desde la base de datos
     private byte[] cargarFotoDesdeBD(int id) {
         SQLiteDatabase db = dbConexion.getReadableDatabase();
         byte[] foto = null;
@@ -204,9 +220,4 @@ public class CiudadanoAdapter extends RecyclerView.Adapter<CiudadanoAdapter.View
 
         return foto;
     }
-
-
-
-
-
 }

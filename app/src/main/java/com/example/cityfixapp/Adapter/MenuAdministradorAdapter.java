@@ -22,6 +22,7 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
     private final List<Boolean> visibilidadSubmenus = Arrays.asList(false, false, false, false);
     private final OnMenuClickListener listener;
 
+    // Interfaz para manejar los clicks en el menú
     public interface OnMenuClickListener {
         void mostrarIncidencias();
         void nuevoAdministrador();
@@ -34,6 +35,7 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
         void mostrarCiudadanos();
     }
 
+    // Constructor que recibe el listener
     public MenuAdministradorAdapter(OnMenuClickListener listener) {
         this.listener = listener;
     }
@@ -45,6 +47,8 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
         return new ViewHolder(vista);
     }
 
+
+    // Método para enlazar los datos a cada ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String nombreSeccion = secciones.get(position);
@@ -55,6 +59,7 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
         holder.menuTecnicos.setVisibility(View.GONE);
         holder.menuCiudadanos.setVisibility(View.GONE);
 
+        // Configurar la visibilidad del menú según la sección
         holder.titulo.setOnClickListener(v -> {
             boolean visible = visibilidadSubmenus.get(position);
             Collections.fill(visibilidadSubmenus, false);
@@ -62,6 +67,7 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
             notifyDataSetChanged();
         });
 
+        // Mostrar el submenu correspondiente si está visible
         if (visibilidadSubmenus.get(position)) {
             switch (nombreSeccion) {
                 case "Incidencias":
@@ -79,6 +85,7 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
             }
         }
 
+        // Configurar los listeners de los botones
         holder.btMostrarIncidencias.setOnClickListener(v -> listener.mostrarIncidencias());
         holder.btNuevoAdministrador.setOnClickListener(v -> listener.nuevoAdministrador());
         holder.btModificarAdministrador.setOnClickListener(v -> listener.modificarAdministrador());
@@ -95,12 +102,15 @@ public class MenuAdministradorAdapter extends RecyclerView.Adapter<MenuAdministr
         return secciones.size();
     }
 
+    // ViewHolder para cada elemento del RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        // Elementos de la vista
         TextView titulo;
         ConstraintLayout menuIncidencias, menuAdministradores, menuTecnicos, menuCiudadanos;
         Button btMostrarIncidencias, btNuevoAdministrador, btModificarAdministrador, btMostrarAdministradores;
         Button btNuevoTecnico, btModificarTecnico, btMostrarTecnicos, btModificarCiudadano, btMostrarCiudadanos;
 
+        // Constructor del ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.item_funcion);

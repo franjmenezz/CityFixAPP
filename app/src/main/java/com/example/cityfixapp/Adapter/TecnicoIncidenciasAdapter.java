@@ -69,7 +69,7 @@ public class TecnicoIncidenciasAdapter extends RecyclerView.Adapter<TecnicoIncid
                 break;
         }
 
-        // ✅ PASAR POSICIÓN AQUÍ
+        // PASAR POSICIÓN AQUÍ
         holder.btnVerDetalles.setOnClickListener(v -> mostrarDialogoDetalles(inc, position));
     }
 

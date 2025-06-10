@@ -18,6 +18,7 @@ public class ListasAdapter extends RecyclerView.Adapter<ListasAdapter.ViewHolder
         this.items = items;
     }
 
+    // Método para refrescar el RecyclerView
     @NonNull
     @Override
     public ListasAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -26,11 +27,13 @@ public class ListasAdapter extends RecyclerView.Adapter<ListasAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+    // Método para enlazar los datos a cada ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ListasAdapter.ViewHolder holder, int position) {
         holder.textView.setText(items.get(position));
     }
 
+    // Método para filtrar los datos
     @Override
     public int getItemCount() {
         return items.size();

@@ -9,6 +9,7 @@ public class DBEncriptacion {
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1234567890123456"; // Clave de 16 caracteres
 
+    //Método para encriptar datos usanddo AES
     public static String encrypt(String data) throws Exception {
         Key key = new SecretKeySpec(KEY.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -17,6 +18,7 @@ public class DBEncriptacion {
         return Base64.encodeToString(encryptedValue, Base64.DEFAULT);
     }
 
+   // Método para desencriptar datos usando AES
     public static String decrypt(String data) throws Exception {
         Key key = new SecretKeySpec(KEY.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -25,7 +27,4 @@ public class DBEncriptacion {
         byte[] decryptedValue = cipher.doFinal(decodedValue);
         return new String(decryptedValue);
     }
-
-
-
 }
