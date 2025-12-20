@@ -29,7 +29,7 @@ CityFixAPP es una aplicación nativa Android desarrollada en Android Studio para
 
 El proyecto está organizado como una app Android estándar:
 
-## 🧱 Arquitectura y organización
+## Arquitectura y organización
 
 El proyecto está organizado como una app Android estándar:
 
