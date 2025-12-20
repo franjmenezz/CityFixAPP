@@ -46,7 +46,7 @@ app/
 │           ├── drawable/   // Iconos, fondos, logo
 │           └── values/     // strings, colors, styles
 └── build.gradle
-
+````
 
 
 - Capa de **presentación**: Activities/Fragments que gestionan la interfaz, listas de incidencias, formularios, etc.
