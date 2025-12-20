@@ -28,18 +28,25 @@ CityFixAPP es una aplicación nativa Android desarrollada en Android Studio para
 ## Arquitectura y organización
 
 El proyecto está organizado como una app Android estándar:
+
+## 🧱 Arquitectura y organización
+
+El proyecto está organizado como una app Android estándar:
+
+```text
 app/
 ├── src/
-│ └── main/
-│ ├── java/com/example/cityfixapp/
-│ │ ├── ui/ // Activities, Fragments, Adapters
-│ │ ├── data/ // Modelos y acceso a datos
-│ │ └── utils/ // Clases auxiliares
-│ └── res/
-│ ├── layout/ // XML de interfaces
-│ ├── drawable/ // Iconos, fondos, logo
-│ └── values/ // strings, colors, styles
+│   └── main/
+│       ├── java/com/example/cityfixapp/
+│       │   ├── ui/         // Activities, Fragments, Adapters
+│       │   ├── data/       // Modelos y acceso a datos
+│       │   └── utils/      // Clases auxiliares
+│       └── res/
+│           ├── layout/     // XML de interfaces
+│           ├── drawable/   // Iconos, fondos, logo
+│           └── values/     // strings, colors, styles
 └── build.gradle
+
 
 
 - Capa de **presentación**: Activities/Fragments que gestionan la interfaz, listas de incidencias, formularios, etc.
