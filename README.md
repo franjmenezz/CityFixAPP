@@ -1,8 +1,8 @@
 # CityFixAPP
 
-CityFixAPP es una aplicación nativa Android desarrollada en Android Studio para **reportar** y gestionar incidencias urbanas en tu ciudad. El objetivo es que cualquier ciudadano pueda comunicar problemas del entorno (baches, basuras, farolas fundidas, etc.) y que el ayuntamiento pueda priorizarlos y resolverlos de forma más eficiente.
-
 ![CityFix Logo](app/src/main/ic_launcher-playstore.png)
+
+CityFixAPP es una aplicación nativa Android desarrollada en Android Studio para **reportar** y gestionar incidencias urbanas en tu ciudad. El objetivo es que cualquier ciudadano pueda comunicar problemas del entorno (baches, basuras, farolas fundidas, etc.) y que el ayuntamiento pueda priorizarlos y resolverlos de forma más eficiente.
 
 ---
 
